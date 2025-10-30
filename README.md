@@ -1,1 +1,2 @@
-# -SEW2-FlashFour_TommySpace
+# RubyOnRailsProject
+A repo for ruby on rails project coursework
