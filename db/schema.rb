@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_30_121707) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_30_125929) do
   create_table "card_progresses", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "card_id", null: false
@@ -104,6 +104,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_121707) do
     t.string "encrypted_password", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "remember_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

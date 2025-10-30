@@ -1,10 +1,137 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* Styles for the new header */
+.main-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding doesn't add to the width */
+  margin-bottom: 2rem;
+  z-index: 1000; /* Ensures header stays on top */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.user-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Adds space between items */
+}
+
+.user-name {
+  color: #555;
+}
+
+.header-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.header-button:hover {
+  background-color: #e0e0e0;
+}
+/* Center the container on the page */
+body {
+  background-color: #f7f7f7;
+  font-family: sans-serif;
+  margin: 0; /* Add this to remove default body margin */
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px; /* Add padding to account for the sticky header's height */
+}
+
+/* The main box for authentication forms */
+.auth-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 2rem;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+/* Style for the main headings like "Welcome!" */
+.auth-container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Style for each form field (label + input) */
+.auth-container .field {
+  margin-bottom: 1.0rem;
+  text-align: left;
+}
+
+.auth-container .field label {
+  display: block;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Style for the text input fields */
+.auth-container .field input[type="email"],
+.auth-container .field input[type="text"],
+.auth-container .field input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Important for padding and width to work together */
+}
+
+/* Style for the submit button */
+.auth-container .actions input[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.auth-container .actions input[type="submit"]:hover {
+  background-color: #d0d0d0;
+}
+
+/* Style for the links like "Sign up" and "Forgot your password?" */
+.auth-container a {
+  margin-top: 0.5rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
