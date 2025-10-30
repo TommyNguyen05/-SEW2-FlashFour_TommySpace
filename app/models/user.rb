@@ -4,8 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # Associations
-  has_many :decks
+  has_many :decks, foreign_key: :owner_id, inverse_of: :owner, dependent: :destroy
   has_many :flashcards, through: :decks
 
   # Logic to check the last study session and update the streak.

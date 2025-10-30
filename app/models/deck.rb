@@ -1,7 +1,11 @@
 class Deck < ApplicationRecord
   # Associations
-  belongs_to :user  # Each deck belongs to a user
-  has_many :flashcards, dependent: :destroy # A deck has many flashcards
+  # belongs_to :user  # Each deck belongs to a user
+  # has_many :flashcards, dependent: :destroy # A deck has many flashcards
+
+  # Tommy adjust
+  belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
+  has_many :flashcards, class_name: 'Flashcard', foreign_key: 'deck_id', dependent: :destroy
 
   # Self-referential association for parent deck
   belongs_to :parent, class_name: 'Deck', optional: true 

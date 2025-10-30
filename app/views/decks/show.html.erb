@@ -1,0 +1,16 @@
+<h2><%= @deck.title %></h2>
+<p><%= @deck.description %></p>
+
+<div class="actions">
+  <%= link_to "Add card", new_deck_flashcard_path(@deck), class: "button primary" %>
+  <%= link_to "Back to decks", decks_path, class: "button" %>
+</div>
+
+<% if @deck.respond_to?(:flashcards) %>
+  <h3>Cards</h3>
+  <ul>
+    <% @deck.flashcards.each do |card| %>
+      <li><strong>Front:</strong> <%= truncate(card.front_text, length: 80) %> — <strong>Back:</strong> <%= truncate(card.back_text, length: 80) %></li>
+    <% end %>
+  </ul>
+<% end %>

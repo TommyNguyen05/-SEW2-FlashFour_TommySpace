@@ -1,34 +1,31 @@
-class FlashcardController < ApplicationController
+class FlashcardsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_deck
 
-  # Render form for creating a new flashcard
-  def new 
+  def new
     @flashcard = @deck.flashcards.new
   end
 
-  # Create a new flashcard in the specified deck
-  def create 
-    # Associate new flashcard with the deck
-    @flashcard = @deck.flashcards.new(flashcard_params) 
-
-    # Attempt to save the new flashcard
-    if @flashcard.save 
-      redirect_to @deck, notice: 'Flashcard was successfully created.'
+  def create
+    @flashcard = @deck.flashcards.new(flashcard_params)
+    if @flashcard.save
+      if params[:commit] == 'Create and add another'
+        redirect_to new_deck_flashcard_path(@deck), notice: 'Card added.'
+      else
+        redirect_to deck_path(@deck), notice: 'Card added.'
+      end
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   private
-  
-  # Set the deck based on the current user and provided deck_id
-  def set_deck 
+
+  def set_deck
     @deck = current_user.decks.find(params[:deck_id])
   end
 
-  # Strong parameters for flashcard
-  def flashcard_params 
-    params.require(:flashcard).permit(:front_text, :difficulty)
+  def flashcard_params
+    params.require(:flashcard).permit(:front_text, :back_text, :card_type)
   end
 end

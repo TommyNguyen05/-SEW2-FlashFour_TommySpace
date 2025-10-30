@@ -1,23 +1,27 @@
 class Flashcard < ApplicationRecord
+  # Map this model to the "cards" table in the database
+  self.table_name = 'cards'
+
   # Associations
-  belongs_to :deck  # Each flashcard belongs to a deck
+  belongs_to :deck
 
-  # Difficulty levels
-  enum difficulty: { easy: 0, medium: 1, hard: 2 } 
+  # column that exists in the schema
+  enum card_type: { basic: 0 }
 
-  # Callback to translate front_text before creating the flashcard
-  before_create :translate_front_text 
+  validates :front_text, presence: true
+  validates :back_text, presence: true
+
+  # Callback to set a back_text stub from front_text (demo placeholder)
+  before_create :translate_front_text
 
   private
 
   def translate_front_text
     start_time = Time.now
     sleep(0.5)
-    self.back_text = "Translated: #{front_text}"
-    end_time = Time.now
-
-    translation_time = end_time - start_time
-    if translation_time > 5
-      Rails.logger.warn "Translation took longer than 5 seconds, details: #{translation_time} seconds"
-    end
+    # Only set back_text if the user didn't provide one
+    self.back_text = "Translated: #{front_text}" if back_text.blank?
+    translation_time = Time.now - start_time
+    Rails.logger.warn("Translation took longer than 5 seconds: #{translation_time}s") if translation_time > 5
+  end
 end
