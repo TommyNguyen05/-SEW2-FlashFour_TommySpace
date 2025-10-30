@@ -3,7 +3,8 @@ class CreateUsers < ActiveRecord::Migration[7.1]
   def change
     create_table :users do |t|
       # The user's email address, used for login and notifications. Must be unique.
-      t.string :email, null: false
+      # Tommy: change email to username
+      t.string :username, null: false
       # The user's display name, shown publicly.
       t.string :display_name, null: false
       # The user's encrypted password.

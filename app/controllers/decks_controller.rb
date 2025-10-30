@@ -1,18 +1,18 @@
+# frozen_string_literal: true
+
 class DecksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_deck, only: [:show, :edit, :update, :destroy]
+  before_action :set_deck, only: %i[show edit update destroy]
 
   # List all top-level decks for the current user
-  def index 
+  def index
     @decks = current_user.decks.where(parent_id: nil) # Only top-level decks
   end
 
-  def show 
-
-  end
+  def show; end
 
   # Render form for creating a new deck
-  def new 
+  def new
     @deck = current_user.decks.new(deck_params) # Associate new deck with current user
 
     # Attempt to save the new deck
