@@ -5,7 +5,7 @@ class CardProgress < ApplicationRecord
   belongs_to :card, class_name: 'Flashcard'
 
   # Rename 'new' to 'fresh' to avoid conflict with the reserved keyword.
-  enum state: { fresh: 0, learning: 1, review: 2, relearning: 3 }
+  enum :state, { fresh: 0, learning: 1, review: 2, relearning: 3 }, prefix: true
 
   validates :ease_factor, numericality: { greater_than_or_equal_to: 1.3 }
   validates :interval_days, numericality: { greater_than_or_equal_to: 0 }

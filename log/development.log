@@ -1189,3 +1189,637 @@ ArgumentError (wrong number of arguments (given 0, expected 1..2)):
 app/models/card_progress.rb:8:in `<class:CardProgress>'
 app/models/card_progress.rb:4:in `<main>'
 app/controllers/progress_analytics_controller.rb:5:in `index'
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "cards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_card_type" ON "cards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_deck_id" ON "cards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_suspended" ON "cards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "decks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id_and_title" ON "decks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id" ON "decks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "tags" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_tags_on_name" ON "tags" ("name") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "display_name" varchar NOT NULL, "encrypted_password" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "remember_created_at" datetime(6)) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acard_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id" ON "acard_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id_and_due_at" ON "acard_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_acard_progresses_on_user_id_and_card_id" ON "acard_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_state" ON "acard_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_card_id" ON "acard_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "acard_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_162cd2096d"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "card_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acard_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id" ON "acard_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id_and_due_at" ON "acard_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_acard_progresses_on_user_id_and_card_id" ON "acard_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_state" ON "acard_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_card_id" ON "acard_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "acard_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_162cd2096d"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_034e0c57d9"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "card_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_suspended" ON "acards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_deck_id" ON "acards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_card_type" ON "acards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "acards" ("id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at")
+                     SELECT "id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at" FROM "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "cards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6c4effce17"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_card_type" ON "cards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_deck_id" ON "cards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_suspended" ON "cards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "cards" ("id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at")
+                     SELECT "id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at" FROM "acards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "acards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adeck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_user_id" ON "adeck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_deck_id" ON "adeck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_adeck_collaborators_on_deck_id_and_user_id" ON "adeck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adeck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c91a0212d9"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "deck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adeck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_user_id" ON "adeck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_deck_id" ON "adeck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_adeck_collaborators_on_deck_id_and_user_id" ON "adeck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "adeck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c91a0212d9"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+, CONSTRAINT "fk_rails_109cbbffaf"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "deck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adecks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adecks_on_owner_id" ON "adecks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adecks_on_owner_id_and_title" ON "adecks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adecks" ("id","owner_id","title","description","is_public","created_at","updated_at")
+                     SELECT "id","owner_id","title","description","is_public","created_at","updated_at" FROM "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "decks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9b771a9714"
+FOREIGN KEY ("owner_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id_and_title" ON "decks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id" ON "decks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "decks" ("id","owner_id","title","description","is_public","created_at","updated_at")
+                     SELECT "id","owner_id","title","description","is_public","created_at","updated_at" FROM "adecks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adecks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "areviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id" ON "areviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id_and_card_id_and_reviewed_at" ON "areviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_card_id" ON "areviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "areviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6db99a1526"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "reviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "areviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id" ON "areviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id_and_card_id_and_reviewed_at" ON "areviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_card_id" ON "areviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "areviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6db99a1526"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_74a66bd6c5"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "reviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ataggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_tag_id" ON "ataggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_ataggings_on_tag_id_and_card_id" ON "ataggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_card_id" ON "ataggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "ataggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c7f6c91aa0"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "taggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ataggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_tag_id" ON "ataggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_ataggings_on_tag_id_and_card_id" ON "ataggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_card_id" ON "ataggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "ataggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c7f6c91aa0"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_9fcd2e236b"
+FOREIGN KEY ("tag_id")
+  REFERENCES "tags" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "taggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251030125929) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251030121707),
+(20251024000700),
+(20251024000600),
+(20251024000500),
+(20251024000400),
+(20251024000300),
+(20251024000200),
+(20251024000100); /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-11-01 13:09:41.411255', '2025-11-01 13:09:41.411257') RETURNING "key" /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '9b1390ef76a7e703bb0a979ddc7651062ee055cb', '2025-11-01 13:09:41.413318', '2025-11-01 13:09:41.413319') RETURNING "key" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (1.6ms)[0m  [1m[35mDROP TABLE IF EXISTS "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "cards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_cards_on_card_type" ON "cards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_deck_id" ON "cards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_suspended" ON "cards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "decks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id_and_title" ON "decks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id" ON "decks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "tags" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_tags_on_name" ON "tags" ("name") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "display_name" varchar NOT NULL, "encrypted_password" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "remember_created_at" datetime(6)) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acard_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id" ON "acard_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id_and_due_at" ON "acard_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_acard_progresses_on_user_id_and_card_id" ON "acard_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_state" ON "acard_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_card_id" ON "acard_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "acard_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_162cd2096d"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "card_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acard_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id" ON "acard_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id_and_due_at" ON "acard_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_acard_progresses_on_user_id_and_card_id" ON "acard_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_state" ON "acard_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_card_id" ON "acard_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "acard_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_162cd2096d"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_034e0c57d9"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "card_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_suspended" ON "acards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_deck_id" ON "acards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_card_type" ON "acards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "acards" ("id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at")
+                     SELECT "id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at" FROM "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "cards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6c4effce17"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_cards_on_card_type" ON "cards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_deck_id" ON "cards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_suspended" ON "cards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "cards" ("id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at")
+                     SELECT "id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at" FROM "acards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "acards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adeck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_user_id" ON "adeck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_deck_id" ON "adeck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_adeck_collaborators_on_deck_id_and_user_id" ON "adeck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adeck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c91a0212d9"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "deck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adeck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_user_id" ON "adeck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_deck_id" ON "adeck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_adeck_collaborators_on_deck_id_and_user_id" ON "adeck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adeck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c91a0212d9"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+, CONSTRAINT "fk_rails_109cbbffaf"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "deck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adecks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adecks_on_owner_id" ON "adecks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adecks_on_owner_id_and_title" ON "adecks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adecks" ("id","owner_id","title","description","is_public","created_at","updated_at")
+                     SELECT "id","owner_id","title","description","is_public","created_at","updated_at" FROM "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "decks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9b771a9714"
+FOREIGN KEY ("owner_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id_and_title" ON "decks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id" ON "decks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "decks" ("id","owner_id","title","description","is_public","created_at","updated_at")
+                     SELECT "id","owner_id","title","description","is_public","created_at","updated_at" FROM "adecks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adecks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "areviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id" ON "areviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id_and_card_id_and_reviewed_at" ON "areviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_card_id" ON "areviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "areviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6db99a1526"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "reviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "areviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id" ON "areviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id_and_card_id_and_reviewed_at" ON "areviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_card_id" ON "areviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "areviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6db99a1526"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_74a66bd6c5"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "reviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (1.6ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ataggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_tag_id" ON "ataggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_ataggings_on_tag_id_and_card_id" ON "ataggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_card_id" ON "ataggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "ataggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c7f6c91aa0"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "taggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ataggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_tag_id" ON "ataggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_ataggings_on_tag_id_and_card_id" ON "ataggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_card_id" ON "ataggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "ataggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c7f6c91aa0"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_9fcd2e236b"
+FOREIGN KEY ("tag_id")
+  REFERENCES "tags" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "taggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Update (0.1ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'development', "updated_at" = '2025-11-01 13:09:41.678448' WHERE "ar_internal_metadata"."key" = 'environment' /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Update (0.1ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2025-11-01 13:09:41.679911' WHERE "ar_internal_metadata"."key" = 'environment' /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
