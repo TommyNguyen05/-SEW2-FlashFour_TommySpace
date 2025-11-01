@@ -1,0 +1,44 @@
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "decks", "data-turbo-track": "reload" %>
+<% end %>
+
+<div class="center-card">
+  <h2>Import Deck</h2>
+
+  <%= form_with model: @deck, url: import_decks_path, multipart: true, local: true do |f| %>
+    <% if @deck.errors.any? %>
+      <div class="error-messages">
+        <h3><%= pluralize(@deck.errors.count, "error") %> prevented this deck from being imported:</h3>
+        <ul>
+          <% @deck.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :title, "Deck Name" %>
+      <%= f.text_field :title, required: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 3 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :file, "Upload File (.txt)" %>
+      <%= f.file_field :file, accept: ".txt", required: true %>
+      <small class="help-text">
+        Each line should contain the front and back content of a card, separated by a comma.
+        <br>Example: "What is the capital of France?,Paris"
+      </small>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Import Deck", class: "button primary" %>
+      <%= link_to "Cancel", decks_path, class: "button" %>
+    </div>
+  <% end %>
+</div>

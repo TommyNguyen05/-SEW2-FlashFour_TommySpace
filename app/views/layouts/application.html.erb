@@ -19,10 +19,17 @@
         </div>
         <nav class="user-nav">
           <% if user_signed_in? %>
-            <%= link_to "Decks", root_path, class: "header-button" %>
-            <%= link_to "Progress", progress_path, class: "header-button" %>
-            <span class="user-name">Hello, <%= current_user.display_name %></span>
-            <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "header-button" %>
+            <div class="user-dropdown" data-controller="dropdown">
+              <button class="dropdown-toggle" data-dropdown-target="toggle" data-action="click->dropdown#toggle">
+                <%= current_user.display_name %>
+                <span class="dropdown-arrow">▼</span>
+              </button>
+              <div class="dropdown-menu" data-dropdown-target="menu">
+                <%= link_to "Decks", root_path, class: "dropdown-item" %>
+                <%= link_to "Progress", progress_path, class: "dropdown-item" %>
+                <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item logout-button" %>
+              </div>
+            </div>
           <% else %>
             <%= link_to "Log in", new_user_session_path, class: "header-button" %>
             <%= link_to "Sign up", new_user_registration_path, class: "header-button" %>

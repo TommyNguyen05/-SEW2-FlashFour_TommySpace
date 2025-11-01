@@ -30,7 +30,7 @@
       <%= link_to "Add Card", new_deck_flashcard_path(@deck), class: "button" %>
       <%= link_to "Rename Deck", edit_deck_path(@deck), class: "button" %>
       <button type="button" class="button disabled" disabled title="Share feature coming soon">Share</button>
-      <button type="button" class="button disabled" disabled title="Export feature coming soon">Export</button>
+      <%= link_to "Export", export_deck_path(@deck), class: "button" %>
     </div>
   </div>
 
