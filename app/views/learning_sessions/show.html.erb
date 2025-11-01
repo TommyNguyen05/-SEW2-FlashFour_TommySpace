@@ -1,0 +1,44 @@
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "learning_sessions", "data-turbo-track": "reload" %>
+<% end %>
+
+<div class="learning-container">
+  <div class="learning-header">
+    <%= link_to "← Back to Deck overview", @deck, class: "back-link" %>
+    <div class="cards-remaining">
+      Cards remaining: <%= @cards_remaining %> / <%= @total_cards %>
+    </div>
+  </div>
+
+  <div class="flashcard-container" data-controller="flashcard">
+    <div class="flashcard" data-flashcard-target="card">
+      <div class="flashcard-front" data-flashcard-target="front">
+        <div class="card-label">Front</div>
+        <div class="card-content">
+          <%= @current_card.front_text %>
+        </div>
+      </div>
+      
+      <div class="flashcard-back" data-flashcard-target="back" style="display: none;">
+        <div class="card-label">Back</div>
+        <div class="card-content">
+          <%= @current_card.back_text %>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions">
+      <button class="button flip-button" data-action="click->flashcard#flip" data-flashcard-target="flipButton">
+        Flip Card
+      </button>
+
+      <div class="difficulty-buttons" data-flashcard-target="difficultyButtons" style="display: none;">
+        <%= form_with url: rate_deck_learning_session_path(@deck), method: :post, local: true do |f| %>
+          <%= button_tag 'Unfamiliar', type: 'submit', name: 'rating', value: 'unfamiliar', class: 'button difficulty-button unfamiliar' %>
+          <%= button_tag 'Still Learning', type: 'submit', name: 'rating', value: 'still_learning', class: 'button difficulty-button still-learning' %>
+          <%= button_tag 'Mastered', type: 'submit', name: 'rating', value: 'mastered', class: 'button difficulty-button mastered' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

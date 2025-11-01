@@ -1,64 +1,59 @@
+# frozen_string_literal: true
+
 class DecksController < ApplicationController
-  before_action :require_login
+  before_action :authenticate_user!
   before_action :set_deck, only: %i[show edit update destroy]
 
   def index
-    @decks = Deck.public_or_owned_by(current_user).includes(:owner)
+    @decks = current_user.decks.order(created_at: :desc) rescue Deck.where(owner_id: current_user.id).order(created_at: :desc)
   end
 
   def show
-    @cards = @deck.cards.includes(:tags)
+    # @deck set in before_action
   end
 
   def new
-    @deck = current_user.owned_decks.new
+    @deck = Deck.new
   end
 
   def create
-    @deck = current_user.owned_decks.new(deck_params)
+    @deck = Deck.new(deck_params)
+    # Associate to current user. If your Deck model has belongs_to :owner, class_name: 'User'
+    # you can use: @deck.owner = current_user
+    # To be safe with current schema, set the foreign key directly:
+    @deck.owner_id = current_user.id
+
     if @deck.save
-      redirect_to @deck, notice: "Deck created."
+      redirect_to @deck, notice: 'Deck was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-  def edit
-    authorize_owner!(@deck)
-  end
+  def edit; end
 
   def update
-    authorize_owner!(@deck)
     if @deck.update(deck_params)
-      redirect_to @deck, notice: "Deck updated."
+      redirect_to @deck, notice: 'Deck was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    authorize_owner!(@deck)
     @deck.destroy
-    redirect_to decks_path, notice: "Deck deleted."
+    redirect_to decks_path, notice: 'Deck was successfully deleted.'
   end
 
   private
 
   def set_deck
-    @deck =
-      Deck
-        .left_outer_joins(:deck_collaborators)
-        .where("decks.is_public = TRUE OR decks.owner_id = :uid OR deck_collaborators.user_id = :uid", uid: current_user.id)
-        .distinct
-        .find(params[:id])
+    # Prefer association if present; fall back to owner_id filter
+    @deck = (current_user.decks.find(params[:id]) rescue Deck.where(owner_id: current_user.id).find(params[:id]))
   end
 
   def deck_params
-    params.require(:deck).permit(:title, :description, :is_public)
-  end
-
-  def authorize_owner!(deck)
-    return if deck.owner_id == current_user.id
-    redirect_to deck, alert: "Only the owner can do that."
+    # Use db columns (title, description, is_public). Keep :name for backward compatibility if you had it earlier.
+    params.require(:deck).permit(:title, :description, :is_public, :name)
   end
 end

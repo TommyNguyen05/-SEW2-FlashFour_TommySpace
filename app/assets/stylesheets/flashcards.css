@@ -1,0 +1,10 @@
+/* Styles for flashcard creation and management */
+
+/* Flashcards use the same center-card container as decks, 
+   but we can add flashcard-specific styles here as needed */
+
+/* Example: Additional styling for flashcard text areas */
+.center-card .field textarea[rows="4"] {
+  min-height: 100px;
+  resize: vertical;
+}

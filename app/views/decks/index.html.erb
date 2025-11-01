@@ -1,0 +1,36 @@
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "decks", "data-turbo-track": "reload" %>
+<% end %>
+
+<div class="decks-container">
+  <div class="decks-header">
+    <h1>My Decks</h1>
+    <%= link_to "Create New Deck", new_deck_path, class: "button primary" %>
+  </div>
+
+  <% if @decks.any? %>
+    <div class="decks-grid">
+      <% @decks.each do |deck| %>
+        <div class="deck-card">
+          <%= link_to deck, class: "deck-card-link" do %>
+            <h3 class="deck-title"><%= deck.title %></h3>
+            <p class="deck-description"><%= truncate(deck.description, length: 100) if deck.description.present? %></p>
+            <div class="deck-meta">
+              <span class="deck-card-count">
+                <%= deck.flashcards.count %> <%= deck.flashcards.count == 1 ? 'card' : 'cards' %>
+              </span>
+              <span class="deck-updated">
+                Updated <%= time_ago_in_words(deck.updated_at) %> ago
+              </span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <p>You haven't created any decks yet.</p>
+      <p>Click "Create New Deck" to get started!</p>
+    </div>
+  <% end %>
+</div>
