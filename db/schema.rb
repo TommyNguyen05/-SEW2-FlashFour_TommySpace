@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_30_125929) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_01_132955) do
   create_table "card_progresses", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "card_id", null: false
@@ -22,6 +22,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_125929) do
     t.integer "state", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "review_on"
     t.index ["card_id"], name: "index_card_progresses_on_card_id"
     t.index ["state"], name: "index_card_progresses_on_state"
     t.index ["user_id", "card_id"], name: "index_card_progresses_on_user_id_and_card_id", unique: true

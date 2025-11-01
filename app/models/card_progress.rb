@@ -10,7 +10,7 @@ class CardProgress < ApplicationRecord
   validates :ease_factor, numericality: { greater_than_or_equal_to: 1.3 }
   validates :interval_days, numericality: { greater_than_or_equal_to: 0 }
 
-  scope :due_for_review, -> { where("review_on <= ?", Date.today) }
+  scope :due_now, -> { where('review_on <= ?', Date.today) }
 
   def update_from_review(quality)
     # Clamp quality between 0 and 5
@@ -24,13 +24,13 @@ class CardProgress < ApplicationRecord
     else
       # If correct, advance progress
       self.state = 'review'
-      if self.repetition_count == 0
-        self.interval_days = 1
-      elsif self.repetition_count == 1
-        self.interval_days = 6
-      else
-        self.interval_days = (self.interval_days * self.ease_factor).round
-      end
+      self.interval_days = if repetition_count == 0
+                             1
+                           elsif repetition_count == 1
+                             6
+                           else
+                             (interval_days * ease_factor).round
+                           end
       self.repetition_count += 1
     end
 
@@ -38,7 +38,7 @@ class CardProgress < ApplicationRecord
     self.ease_factor += (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
     self.ease_factor = [1.3, self.ease_factor].max # EF cannot be less than 1.3
 
-    self.review_on = Date.today + self.interval_days.days
+    self.review_on = Date.today + interval_days.days
     save
   end
 end
