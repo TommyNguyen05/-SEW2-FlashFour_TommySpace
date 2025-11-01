@@ -1,0 +1,76 @@
+/*
+ * Application Stylesheet - Global Styles Only
+ * 
+ * This file contains only styles that are used across the entire application.
+ * Section-specific styles are loaded per-page as needed.
+ * 
+ * Contents:
+ * 1. Global styles (body, main-content, etc.)
+ * 2. Header styles (navigation, logo - appears on all pages)
+ */
+
+/* Global styles applied across the entire application */
+body {
+  background-color: #f7f7f7;
+  font-family: sans-serif;
+  margin: 0; /* Remove default body margin */
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px; /* Add padding to account for the sticky header's height */
+}
+
+/* Styles for the main header navigation */
+.main-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding doesn't add to the width */
+  margin-bottom: 2rem;
+  z-index: 1000; /* Ensures header stays on top */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.user-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Adds space between items */
+}
+
+.user-name {
+  color: #555;
+}
+
+.header-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.header-button:hover {
+  background-color: #e0e0e0;
+}

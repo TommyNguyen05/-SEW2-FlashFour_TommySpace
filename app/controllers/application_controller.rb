@@ -1,14 +1,14 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user
+  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+  allow_browser versions: :modern
+  
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
-  private
+  protected
 
-  def current_user
-    # TODO: replace with real session lookup
-    @current_user ||= User.first
+  def configure_permitted_parameters
+    # To allow 'display_name' to be accepted during the sign-up process.
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:display_name])
   end
-
-  def require_login
-    redirect_to new_session_path, alert: "Please sign in first." unless current_user
-  end
+  # --- END OF NEW LINES ---
 end

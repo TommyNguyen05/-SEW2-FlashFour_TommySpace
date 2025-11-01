@@ -1,14 +1,16 @@
 class User < ApplicationRecord
-  has_secure_password
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
 
-  has_many :owned_decks, class_name: "Deck", foreign_key: :owner_id, dependent: :destroy
-  has_many :deck_collaborations, class_name: "DeckCollaborator", dependent: :destroy
-  has_many :collaborating_decks, through: :deck_collaborations, source: :deck
+  has_many :decks, foreign_key: :owner_id, inverse_of: :owner, dependent: :destroy
+  has_many :flashcards, through: :decks
 
-  has_many :card_progresses, dependent: :destroy
-  has_many :studying_cards, through: :card_progresses, source: :card
-  has_many :reviews, dependent: :destroy
-
-  validates :email, presence: true, uniqueness: true
-  validates :display_name, presence: true
+  # Logic to check the last study session and update the streak.
+  # For when the user completes a study session
+  def update_streak
+    self.streak += 1
+    save
+  end
 end
