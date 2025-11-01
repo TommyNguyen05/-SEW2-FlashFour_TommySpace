@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  card: one
+  state: review
+  repetitions: 3
+  lapses: 0
+  interval_days: 7
+  ease_factor: 2.5
+  due_at: <%= 1.day.from_now %>
+
+two:
+  user: one
+  card: two
+  state: new
+  repetitions: 0
+  lapses: 0
+  interval_days: 0
+  ease_factor: 2.5
+  due_at: <%= Time.current %>

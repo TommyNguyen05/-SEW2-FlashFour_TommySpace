@@ -6,16 +6,15 @@ Rails.application.routes.draw do
   root 'decks#index'
 
   # Health check route
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
-  # Progress Analytics routes
-  resources :progress_analytics, only: [:index]
-  get 'progress_analytics/deck/:id', to: 'progress_analytics#deck', as: 'deck_progress_analytics'
+  # Progress analytics route
+  get 'progress', to: 'card_progresses#index', as: :progress
 
   # Your other routes
   resources :decks do
-    resources :flashcards, only: [:new, :create]
-    
+    resources :flashcards, only: %i[new create]
+
     # Learning session routes
     resource :learning_session, only: [] do
       get 'start', to: 'learning_sessions#start', as: 'start'

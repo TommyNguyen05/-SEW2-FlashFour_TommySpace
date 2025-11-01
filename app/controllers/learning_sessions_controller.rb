@@ -56,10 +56,6 @@ class LearningSessionsController < ApplicationController
     card = current_card
     if card
       session[:learning_session]['responses'][card.id.to_s] = rating
-      
-      # Record review and update card progress
-      record_review(card, rating)
-      update_card_progress(card, rating)
     end
 
     # Move to next card
@@ -146,83 +142,5 @@ class LearningSessionsController < ApplicationController
 
   def session_complete?
     session[:learning_session]['current_index'] >= total_cards
-  end
-
-  def record_review(card, rating)
-    # Map text ratings to numeric values
-    numeric_rating = case rating
-    when 'unfamiliar' then 1
-    when 'still_learning' then 2
-    when 'mastered' then 4
-    else 3
-    end
-
-    # Get time taken (you can track this in session if needed)
-    time_taken_ms = 0 # Default to 0 for now
-
-    # Get current progress if it exists
-    progress = CardProgress.find_by(user: current_user, card: card)
-    
-    Review.create!(
-      user: current_user,
-      card: card,
-      rating: numeric_rating,
-      time_taken_ms: time_taken_ms,
-      scheduled_interval_days: progress&.interval_days || 0,
-      new_interval_days: calculate_new_interval(progress, numeric_rating),
-      new_ease_factor: calculate_new_ease_factor(progress, numeric_rating),
-      reviewed_at: Time.current
-    )
-  end
-
-  def update_card_progress(card, rating)
-    progress = CardProgress.find_or_initialize_by(user: current_user, card: card)
-    
-    # Map text ratings to numeric values for progress tracking
-    numeric_rating = case rating
-    when 'unfamiliar' then 1
-    when 'still_learning' then 2
-    when 'mastered' then 4
-    else 3
-    end
-
-    progress.update_from_review(numeric_rating)
-  end
-
-  def calculate_new_interval(progress, rating)
-    return 0 unless progress
-    
-    interval = progress.interval_days
-    ease = progress.ease_factor
-
-    case rating
-    when 1
-      0
-    when 2
-      [interval * 1.2, 1].max.to_i
-    when 3, 4
-      progress.new_card? || progress.learning? ? 1 : (interval * ease).to_i
-    else
-      interval
-    end
-  end
-
-  def calculate_new_ease_factor(progress, rating)
-    return 2.5 unless progress
-    
-    ease = progress.ease_factor
-    
-    case rating
-    when 1
-      [ease - 0.2, 1.3].max
-    when 2
-      [ease - 0.15, 1.3].max
-    when 3
-      ease
-    when 4
-      ease + 0.1
-    else
-      ease
-    end
   end
 end

@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  card: one
+  rating: good
+  time_taken_ms: 3500
+  scheduled_interval_days: 1
+  new_interval_days: 3
+  new_ease_factor: 2.6
+  reviewed_at: <%= Time.current %>
+
+two:
+  user: one
+  card: two
+  rating: easy
+  time_taken_ms: 2000
+  scheduled_interval_days: 0
+  new_interval_days: 4
+  new_ease_factor: 2.8
+  reviewed_at: <%= 1.day.ago %>
