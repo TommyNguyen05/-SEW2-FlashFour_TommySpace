@@ -103,7 +103,7 @@ class QuizzesController < ApplicationController
   private
 
   def set_deck
-    @deck = (current_user.decks.find(params[:deck_id]) rescue Deck.where(owner_id: current_user.id).find(params[:deck_id]))
+    @deck = current_user.decks.find_by(id: params[:deck_id]) || Deck.find_by!(owner_id: current_user.id, id: params[:deck_id])
   end
 
   def initialize_quiz_session
@@ -114,7 +114,8 @@ class QuizzesController < ApplicationController
     @quiz_session = session[:quiz_session]&.with_indifferent_access
     
     unless @quiz_session
-      redirect_to @deck, alert: 'No active quiz session found.' and return
+      redirect_to @deck, alert: 'No active quiz session found.'
+      return
     end
   end
 
