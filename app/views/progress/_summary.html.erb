@@ -1,0 +1,33 @@
+<section class="analytics-section analytics-summary">
+  <h2>Overview</h2>
+  <div class="analytics-grid">
+    <div class="analytics-card">
+      <p class="label">Total cards</p>
+      <p class="value"><%= total_cards || 0 %></p>
+    </div>
+
+    <div class="analytics-card">
+      <p class="label">Reviewed today</p>
+      <p class="value"><%= reviewed_today || 0 %></p>
+    </div>
+
+    <div class="analytics-card">
+      <p class="label">Due now</p>
+      <p class="value"><%= due_cards || 0 %></p>
+    </div>
+
+    <div class="analytics-card">
+      <p class="label">Accuracy</p>
+      <p class="value">
+        <%= accuracy.present? ? "#{accuracy}%" : "—" %>
+      </p>
+    </div>
+
+    <div class="analytics-card">
+      <p class="label">Streak</p>
+      <p class="value">
+        <%= streak_days.present? ? "#{streak_days} day#{'s' unless streak_days == 1}" : "0 days" %>
+      </p>
+    </div>
+  </div>
+</section>
