@@ -6,10 +6,6 @@ class User < ApplicationRecord
 
   has_many :decks, foreign_key: :owner_id, inverse_of: :owner, dependent: :destroy
   has_many :flashcards, through: :decks
-  has_many :card_progresses, dependent: :destroy
-  has_many :reviews, dependent: :destroy
-  has_many :deck_collaborators, dependent: :destroy
-  has_many :collaborated_decks, through: :deck_collaborators, source: :deck
 
   # Logic to check the last study session and update the streak.
   # For when the user completes a study session

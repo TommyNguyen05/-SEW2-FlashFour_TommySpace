@@ -6,8 +6,6 @@ class Deck < ApplicationRecord
   # Tommy adjust
   belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
   has_many :flashcards, class_name: 'Flashcard', foreign_key: 'deck_id', dependent: :destroy
-  has_many :deck_collaborators, dependent: :destroy
-  has_many :collaborators, through: :deck_collaborators, source: :user
 
   # Self-referential association for parent deck
   belongs_to :parent, class_name: 'Deck', optional: true 
