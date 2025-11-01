@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   # Progress analytics route
-  get 'progress', to: 'card_progresses#index', as: :progress
+  get 'progress', to: 'progress_analytics#index', as: :progress
 
   # Your other routes
   resources :decks do
