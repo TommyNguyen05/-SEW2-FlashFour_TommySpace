@@ -5,7 +5,10 @@
 <div class="decks-container">
   <div class="decks-header">
     <h1>My Decks</h1>
-    <%= link_to "Create New Deck", new_deck_path, class: "button primary" %>
+    <div class="header-buttons">
+      <%= link_to "Create New Deck", new_deck_path, class: "button primary" %>
+      <%= link_to "Import Deck", import_form_decks_path, class: "button" %>
+    </div>
   </div>
 
   <% if @decks.any? %>

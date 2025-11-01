@@ -13,6 +13,11 @@ Rails.application.routes.draw do
 
   # Your other routes
   resources :decks do
+    collection do
+      get 'import_form'
+      post 'import'
+    end
+    
     member do
       get 'export'
     end

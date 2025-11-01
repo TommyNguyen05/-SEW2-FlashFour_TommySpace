@@ -63,6 +63,72 @@ class DecksController < ApplicationController
               disposition: 'attachment'
   end
 
+  def import_form
+    @deck = Deck.new
+  end
+
+  def import
+    @deck = Deck.new(import_deck_params)
+    @deck.owner_id = current_user.id
+
+    if params[:deck][:file].blank?
+      @deck.errors.add(:base, "Please upload a file")
+      render :import_form, status: :unprocessable_entity
+      return
+    end
+
+    file = params[:deck][:file]
+    
+    # Parse the uploaded file
+    begin
+      content = file.read.force_encoding('UTF-8')
+      lines = content.split("\n").reject(&:blank?)
+      
+      if lines.empty?
+        @deck.errors.add(:base, "The uploaded file is empty")
+        render :import_form, status: :unprocessable_entity
+        return
+      end
+
+      # Save the deck first
+      if @deck.save
+        # Create flashcards from the file content
+        cards_created = 0
+        lines.each do |line|
+          # Split by comma, handling escaped commas
+          parts = line.split(',', 2)
+          next if parts.length < 2
+
+          front = parts[0].gsub('\\,', ',').strip
+          back = parts[1].gsub('\\,', ',').strip
+          
+          next if front.blank? || back.blank?
+
+          @deck.flashcards.create(
+            front_text: front,
+            back_text: back,
+            card_type: :basic
+          )
+          cards_created += 1
+        end
+
+        if cards_created > 0
+          redirect_to @deck, notice: "Deck was successfully imported with #{cards_created} cards."
+        else
+          @deck.destroy
+          @deck = Deck.new(import_deck_params)
+          @deck.errors.add(:base, "No valid cards found in the file")
+          render :import_form, status: :unprocessable_entity
+        end
+      else
+        render :import_form, status: :unprocessable_entity
+      end
+    rescue => e
+      @deck.errors.add(:base, "Error reading file: #{e.message}")
+      render :import_form, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_deck
@@ -73,5 +139,9 @@ class DecksController < ApplicationController
   def deck_params
     # Use db columns (title, description, is_public). Keep :name for backward compatibility if you had it earlier.
     params.require(:deck).permit(:title, :description, :is_public, :name)
+  end
+
+  def import_deck_params
+    params.require(:deck).permit(:title, :description)
   end
 end

@@ -44,6 +44,38 @@
   margin-right: 0.5rem;
 }
 
+.center-card .field input[type="file"] {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.center-card .help-text {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.center-card .error-messages {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #721c24;
+}
+
+.center-card .error-messages h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.center-card .error-messages ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
 .center-card .actions {
   display: flex;
   gap: 1rem;
@@ -69,6 +101,11 @@
   font-size: 2rem;
   color: #333;
   margin: 0;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
 }
 
 .decks-grid {
