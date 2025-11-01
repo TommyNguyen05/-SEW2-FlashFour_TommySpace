@@ -11,7 +11,7 @@ class CreateCards < ActiveRecord::Migration[7.1]
       # The text on the back of the card.
       t.text :back_text, null: false
       # Extra data for the card, stored as JSON.
-      t.jsonb :extras, null: false, default: {}
+      t.json :extras, null: false, default: {}
       # Whether the card is suspended from review.
       t.boolean :suspended, null: false, default: false
 
