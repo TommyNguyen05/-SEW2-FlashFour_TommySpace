@@ -6,15 +6,26 @@
   <div class="decks-header">
     <h1>My Decks</h1>
     <div class="header-buttons">
-      <%= link_to "Create New Deck", new_deck_path, class: "button primary" %>
       <%= link_to "Import Deck", import_form_decks_path, class: "button" %>
     </div>
   </div>
 
-  <% if @decks.any? %>
-    <div class="decks-grid">
+  <div class="search-container">
+    <input type="text" id="deck-search" class="search-bar" placeholder="Search your decks..." />
+  </div>
+
+  <div class="decks-grid">
+    <!-- Create New Deck Card -->
+    <div class="deck-card create-deck-card">
+      <%= link_to new_deck_path, class: "deck-card-link create-deck-link" do %>
+        <div class="create-deck-icon">+</div>
+        <h3 class="deck-title">Create New Deck</h3>
+      <% end %>
+    </div>
+
+    <% if @decks.any? %>
       <% @decks.each do |deck| %>
-        <div class="deck-card">
+        <div class="deck-card" data-deck-title="<%= deck.title.downcase %>" data-deck-description="<%= deck.description&.downcase %>">
           <%= link_to deck, class: "deck-card-link" do %>
             <h3 class="deck-title"><%= deck.title %></h3>
             <p class="deck-description"><%= truncate(deck.description, length: 100) if deck.description.present? %></p>
@@ -27,13 +38,76 @@
               </span>
             </div>
           <% end %>
+          
+          <div class="deck-menu">
+            <button type="button" class="deck-menu-button" aria-label="Deck options">⋮</button>
+            <div class="deck-menu-dropdown">
+              <%= link_to "Edit Deck", edit_deck_path(deck), class: "menu-item" %>
+              <%= link_to "Export Deck", export_deck_path(deck), class: "menu-item" %>
+              <%= link_to "Delete Deck", deck_path(deck), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this deck?" }, class: "menu-item delete" %>
+            </div>
+          </div>
         </div>
       <% end %>
-    </div>
-  <% else %>
+    <% end %>
+  </div>
+
+  <% if @decks.empty? %>
     <div class="empty-state">
       <p>You haven't created any decks yet.</p>
-      <p>Click "Create New Deck" to get started!</p>
+      <p>Click the "+" card above to get started!</p>
     </div>
   <% end %>
 </div>
+
+<script>
+  // Simple search functionality
+  document.addEventListener('turbo:load', function() {
+    const searchInput = document.getElementById('deck-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const deckCards = document.querySelectorAll('.deck-card:not(.create-deck-card)');
+        
+        deckCards.forEach(card => {
+          const title = card.dataset.deckTitle || '';
+          const description = card.dataset.deckDescription || '';
+          
+          if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // Dropdown menu functionality
+    document.querySelectorAll('.deck-menu-button').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close other open menus
+        document.querySelectorAll('.deck-menu-dropdown.active').forEach(menu => {
+          if (menu !== this.nextElementSibling) {
+            menu.classList.remove('active');
+          }
+        });
+        
+        // Toggle this menu
+        const dropdown = this.nextElementSibling;
+        dropdown.classList.toggle('active');
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.deck-menu')) {
+        document.querySelectorAll('.deck-menu-dropdown.active').forEach(menu => {
+          menu.classList.remove('active');
+        });
+      }
+    });
+  });
+</script>

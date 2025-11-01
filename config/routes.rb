@@ -32,5 +32,14 @@ Rails.application.routes.draw do
       get 'complete', to: 'learning_sessions#complete', as: 'complete'
       post 'restart', to: 'learning_sessions#restart', as: 'restart'
     end
+
+    # Quiz routes
+    resource :quiz, only: [] do
+      get 'start', to: 'quizzes#start', as: 'start'
+      get 'show', to: 'quizzes#show', as: ''
+      post 'answer', to: 'quizzes#answer', as: 'answer'
+      get 'complete', to: 'quizzes#complete', as: 'complete'
+      post 'restart', to: 'quizzes#restart', as: 'restart'
+    end
   end
 end
