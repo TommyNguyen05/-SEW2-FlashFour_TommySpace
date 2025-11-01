@@ -40,7 +40,7 @@ class ProgressAnalyticsController < ApplicationController
 
     # Cards by state for this deck
     @deck_progress = CardProgress.for_deck(@deck).for_user(current_user)
-    @new_cards = @deck_progress.new.count
+    @new_cards = @deck_progress.new_card.count
     @learning_cards = @deck_progress.learning.count
     @review_cards = @deck_progress.review.count
     @relearning_cards = @deck_progress.relearning.count
@@ -100,7 +100,7 @@ class ProgressAnalyticsController < ApplicationController
         cards_studied: deck_reviews.select(:card_id).distinct.count,
         mastered: deck_progress.review.count,
         learning: deck_progress.learning.count,
-        new: deck_progress.new.count
+        new: deck_progress.new_card.count
       }
     end
   end

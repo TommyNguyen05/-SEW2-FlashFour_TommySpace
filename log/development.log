@@ -1321,3 +1321,950 @@ Completed 200 OK in 38ms (Views: 2.1ms | ActiveRecord: 0.2ms (7 queries, 2 cache
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "cards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_card_type" ON "cards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_deck_id" ON "cards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_suspended" ON "cards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "decks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id_and_title" ON "decks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id" ON "decks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "tags" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_tags_on_name" ON "tags" ("name") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "display_name" varchar NOT NULL, "encrypted_password" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "remember_created_at" datetime(6)) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acard_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id" ON "acard_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id_and_due_at" ON "acard_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_acard_progresses_on_user_id_and_card_id" ON "acard_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_state" ON "acard_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_card_id" ON "acard_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "acard_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_162cd2096d"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "card_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acard_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id" ON "acard_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_user_id_and_due_at" ON "acard_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_acard_progresses_on_user_id_and_card_id" ON "acard_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_state" ON "acard_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acard_progresses_on_card_id" ON "acard_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "acard_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "card_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "card_progresses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "repetitions" integer DEFAULT 0 NOT NULL, "lapses" integer DEFAULT 0 NOT NULL, "interval_days" integer DEFAULT 0 NOT NULL, "ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "due_at" datetime(6) DEFAULT (NOW()) NOT NULL, "state" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_162cd2096d"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_034e0c57d9"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_card_id" ON "card_progresses" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_state" ON "card_progresses" ("state") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_card_progresses_on_user_id_and_card_id" ON "card_progresses" ("user_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id_and_due_at" ON "card_progresses" ("user_id", "due_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_card_progresses_on_user_id" ON "card_progresses" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "card_progresses" ("id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at")
+                     SELECT "id","user_id","card_id","repetitions","lapses","interval_days","ease_factor","due_at","state","created_at","updated_at" FROM "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "acard_progresses" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "acards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_suspended" ON "acards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_deck_id" ON "acards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_acards_on_card_type" ON "acards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "acards" ("id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at")
+                     SELECT "id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at" FROM "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "cards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "cards" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "card_type" integer DEFAULT 0 NOT NULL, "front_text" text NOT NULL, "back_text" text NOT NULL, "extras" json DEFAULT '{}' NOT NULL, "suspended" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6c4effce17"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_card_type" ON "cards" ("card_type") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_deck_id" ON "cards" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_cards_on_suspended" ON "cards" ("suspended") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "cards" ("id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at")
+                     SELECT "id","deck_id","card_type","front_text","back_text","extras","suspended","created_at","updated_at" FROM "acards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "acards" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adeck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_user_id" ON "adeck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_deck_id" ON "adeck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_adeck_collaborators_on_deck_id_and_user_id" ON "adeck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adeck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c91a0212d9"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "deck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (1.8ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adeck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_user_id" ON "adeck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adeck_collaborators_on_deck_id" ON "adeck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_adeck_collaborators_on_deck_id_and_user_id" ON "adeck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adeck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "deck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "deck_collaborators" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "deck_id" integer NOT NULL, "user_id" integer NOT NULL, "role" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c91a0212d9"
+FOREIGN KEY ("deck_id")
+  REFERENCES "decks" ("id")
+, CONSTRAINT "fk_rails_109cbbffaf"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_deck_collaborators_on_deck_id_and_user_id" ON "deck_collaborators" ("deck_id", "user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_deck_id" ON "deck_collaborators" ("deck_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_deck_collaborators_on_user_id" ON "deck_collaborators" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "deck_collaborators" ("id","deck_id","user_id","role","created_at","updated_at")
+                     SELECT "id","deck_id","user_id","role","created_at","updated_at" FROM "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adeck_collaborators" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adecks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adecks_on_owner_id" ON "adecks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_adecks_on_owner_id_and_title" ON "adecks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "adecks" ("id","owner_id","title","description","is_public","created_at","updated_at")
+                     SELECT "id","owner_id","title","description","is_public","created_at","updated_at" FROM "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "decks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "decks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "owner_id" integer NOT NULL, "title" varchar NOT NULL, "description" text, "is_public" boolean DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9b771a9714"
+FOREIGN KEY ("owner_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id_and_title" ON "decks" ("owner_id", "title") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_decks_on_owner_id" ON "decks" ("owner_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "decks" ("id","owner_id","title","description","is_public","created_at","updated_at")
+                     SELECT "id","owner_id","title","description","is_public","created_at","updated_at" FROM "adecks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "adecks" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "areviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id" ON "areviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id_and_card_id_and_reviewed_at" ON "areviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_card_id" ON "areviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "areviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6db99a1526"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "reviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "areviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id" ON "areviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_user_id_and_card_id_and_reviewed_at" ON "areviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_areviews_on_card_id" ON "areviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "areviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "reviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "card_id" integer NOT NULL, "rating" integer NOT NULL, "time_taken_ms" integer DEFAULT 0 NOT NULL, "scheduled_interval_days" integer DEFAULT 0 NOT NULL, "new_interval_days" integer DEFAULT 0 NOT NULL, "new_ease_factor" decimal(5,2) DEFAULT 2.5 NOT NULL, "reviewed_at" datetime(6) DEFAULT (NOW()) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_6db99a1526"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_74a66bd6c5"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_card_id" ON "reviews" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id_and_card_id_and_reviewed_at" ON "reviews" ("user_id", "card_id", "reviewed_at") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "reviews" ("id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at")
+                     SELECT "id","user_id","card_id","rating","time_taken_ms","scheduled_interval_days","new_interval_days","new_ease_factor","reviewed_at","created_at","updated_at" FROM "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "areviews" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ataggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_tag_id" ON "ataggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_ataggings_on_tag_id_and_card_id" ON "ataggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_card_id" ON "ataggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "ataggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c7f6c91aa0"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "taggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mPRAGMA foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ataggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_tag_id" ON "ataggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_ataggings_on_tag_id_and_card_id" ON "ataggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ataggings_on_card_id" ON "ataggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "ataggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "taggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "taggings" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tag_id" integer NOT NULL, "card_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c7f6c91aa0"
+FOREIGN KEY ("card_id")
+  REFERENCES "cards" ("id")
+, CONSTRAINT "fk_rails_9fcd2e236b"
+FOREIGN KEY ("tag_id")
+  REFERENCES "tags" ("id")
+) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_card_id" ON "taggings" ("card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_taggings_on_tag_id_and_card_id" ON "taggings" ("tag_id", "card_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_taggings_on_tag_id" ON "taggings" ("tag_id") /*application='RubyOnRailsProject'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "taggings" ("id","tag_id","card_id","created_at","updated_at")
+                     SELECT "id","tag_id","card_id","created_at","updated_at" FROM "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "ataggings" /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251030125929) /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251030121707),
+(20251024000700),
+(20251024000600),
+(20251024000500),
+(20251024000400),
+(20251024000300),
+(20251024000200),
+(20251024000100); /*application='RubyOnRailsProject'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-11-01 07:41:33.720771', '2025-11-01 07:41:33.720773') RETURNING "key" /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '9b1390ef76a7e703bb0a979ddc7651062ee055cb', '2025-11-01 07:41:33.723202', '2025-11-01 07:41:33.723203') RETURNING "key" /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+Started GET "/" for 127.0.0.1 at 2025-11-01 07:42:15 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+Processing by DecksController#index as HTML
+Completed 401 Unauthorized in 25ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2025-11-01 07:42:15 +0000
+Processing by Devise::SessionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 11.1ms | GC: 0.9ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.3ms | GC: 1.5ms)
+Completed 200 OK in 45ms (Views: 22.4ms | ActiveRecord: 1.7ms (0 queries, 0 cached) | GC: 2.5ms)
+
+
+Started GET "/users/sign_up" for 127.0.0.1 at 2025-11-01 07:42:24 +0000
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered devise/shared/_links.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (Duration: 2.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.6ms | GC: 0.0ms)
+Completed 200 OK in 15ms (Views: 4.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2025-11-01 07:42:42 +0000
+Processing by Devise::RegistrationsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]", "display_name"=>"Test User", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RubyOnRailsProject',controller='registrations'*/[0m
+  [1m[36mUser Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'test@example.com' LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='registrations'*/[0m
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "display_name", "encrypted_password", "created_at", "updated_at", "remember_created_at") VALUES ('test@example.com', 'Test User', '$2a$12$ZvLhfqgSNnEanyXmC6GjXOCmLnx5rIeD1Tkz9kE.ENfMUr/mSLoXa', '2025-11-01 07:42:43.074919', '2025-11-01 07:42:43.074919', NULL) RETURNING "id" /*action='create',application='RubyOnRailsProject',controller='registrations'*/[0m
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RubyOnRailsProject',controller='registrations'*/[0m
+Redirected to http://localhost:3000/
+Completed 303 See Other in 258ms (ActiveRecord: 3.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-11-01 07:42:43 +0000
+Processing by DecksController#index as TURBO_STREAM
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/index.html.erb within layouts/application
+  [1m[36mDeck Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "decks" WHERE "decks"."owner_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/index.html.erb:11
+  Rendered decks/index.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.8ms | GC: 0.0ms)
+Completed 200 OK in 28ms (Views: 3.5ms | ActiveRecord: 0.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-11-01 07:42:43 +0000
+Processing by DecksController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/index.html.erb within layouts/application
+  [1m[36mDeck Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "decks" WHERE "decks"."owner_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/index.html.erb:11
+  Rendered decks/index.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.0ms | GC: 0.0ms)
+Completed 200 OK in 14ms (Views: 2.2ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/progress_analytics" for 127.0.0.1 at 2025-11-01 07:43:00 +0000
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:21:in `total_cards_studied'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:8:in `index'
+  [1m[36mReview Sum (0.1ms)[0m  [1m[34mSELECT SUM("reviews"."time_taken_ms") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:48:in `total_study_time'
+  [1m[36mReview Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:31:in `calculate_study_streak'
+Completed 500 Internal Server Error in 20ms (ActiveRecord: 0.6ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+ArgumentError (You tried to define an enum named "state" on the model "CardProgress", but this will generate a class method "new", which is already defined by Active Record.):
+  
+app/models/card_progress.rb:9:in `<class:CardProgress>'
+app/models/card_progress.rb:3:in `<main>'
+app/models/user.rb:26:in `cards_by_state'
+app/controllers/progress_analytics_controller.rb:13:in `index'
+Started GET "/progress_analytics" for 127.0.0.1 at 2025-11-01 07:47:48 +0000
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:21:in `total_cards_studied'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:8:in `index'
+  [1m[36mReview Sum (0.1ms)[0m  [1m[34mSELECT SUM("reviews"."time_taken_ms") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:50:in `total_study_time'
+  [1m[36mReview Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:33:in `calculate_study_streak'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 0 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 2 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 3 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", DATE(reviewed_at) AS "date_reviewed_at" FROM "reviews" WHERE "reviews"."user_id" = 1 AND "reviews"."reviewed_at" BETWEEN '2025-10-26 00:00:00' AND '2025-11-01 23:59:59.999999' GROUP BY DATE(reviewed_at) /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:64:in `calculate_reviews_by_day'
+  [1m[36mCACHE Review Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1[0m
+  ↳ app/controllers/progress_analytics_controller.rb:25:in `index'
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:93:in `map'
+  Rendering layout layouts/application.html.erb
+  Rendering progress_analytics/index.html.erb within layouts/application
+  [1m[36mCACHE Review Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1[0m
+  ↳ app/views/progress_analytics/index.html.erb:146
+  Rendered progress_analytics/index.html.erb within layouts/application (Duration: 4.2ms | GC: 0.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.6ms | GC: 0.3ms)
+Completed 200 OK in 43ms (Views: 7.5ms | ActiveRecord: 2.2ms (13 queries, 2 cached) | GC: 1.2ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-11-01 07:48:14 +0000
+Processing by DecksController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/index.html.erb within layouts/application
+  [1m[36mDeck Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "decks" WHERE "decks"."owner_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/index.html.erb:11
+  Rendered decks/index.html.erb within layouts/application (Duration: 1.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | GC: 0.0ms)
+Completed 200 OK in 15ms (Views: 2.8ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-11-01 07:48:14 +0000
+Processing by DecksController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/index.html.erb within layouts/application
+  [1m[36mDeck Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "decks" WHERE "decks"."owner_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/index.html.erb:11
+  Rendered decks/index.html.erb within layouts/application (Duration: 1.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | GC: 0.0ms)
+Completed 200 OK in 14ms (Views: 2.4ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/decks/new" for 127.0.0.1 at 2025-11-01 07:48:29 +0000
+Processing by DecksController#new as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/new.html.erb within layouts/application
+  Rendered decks/_form.html.erb (Duration: 8.9ms | GC: 0.0ms)
+  Rendered decks/new.html.erb within layouts/application (Duration: 9.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 10.3ms | GC: 0.0ms)
+Completed 200 OK in 25ms (Views: 10.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/decks" for 127.0.0.1 at 2025-11-01 07:48:46 +0000
+Processing by DecksController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "deck"=>{"title"=>"Spanish Vocabulary", "description"=>"Basic Spanish words", "is_public"=>"0"}, "commit"=>"Create"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='decks'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/controllers/decks_controller.rb:26:in `create'
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/controllers/decks_controller.rb:26:in `create'
+  [1m[36mDeck Create (0.2ms)[0m  [1m[32mINSERT INTO "decks" ("owner_id", "title", "description", "is_public", "created_at", "updated_at") VALUES (1, 'Spanish Vocabulary', 'Basic Spanish words', 0, '2025-11-01 07:48:46.094876', '2025-11-01 07:48:46.094876') RETURNING "id" /*action='create',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/controllers/decks_controller.rb:26:in `create'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/controllers/decks_controller.rb:26:in `create'
+Redirected to http://localhost:3000/decks/1
+Completed 302 Found in 20ms (ActiveRecord: 2.5ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/decks/1" for 127.0.0.1 at 2025-11-01 07:48:46 +0000
+Processing by DecksController#show as TURBO_STREAM
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/controllers/decks_controller.rb:52:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering decks/show.html.erb within layouts/application
+  [1m[36mFlashcard Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "cards" WHERE "cards"."deck_id" = 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:14
+  [1m[36mFlashcard Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "cards" WHERE "cards"."deck_id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:37
+  Rendered decks/show.html.erb within layouts/application (Duration: 6.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.9ms | GC: 0.0ms)
+Completed 200 OK in 19ms (Views: 6.9ms | ActiveRecord: 0.5ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/decks/1/flashcards/new" for 127.0.0.1 at 2025-11-01 07:48:55 +0000
+Processing by FlashcardsController#new as HTML
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:25:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering flashcards/new.html.erb within layouts/application
+  Rendered flashcards/new.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.3ms | GC: 0.0ms)
+Completed 200 OK in 19ms (Views: 2.8ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/decks/1/flashcards/new" for 127.0.0.1 at 2025-11-01 07:48:55 +0000
+Processing by FlashcardsController#new as HTML
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:25:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering flashcards/new.html.erb within layouts/application
+  Rendered flashcards/new.html.erb within layouts/application (Duration: 0.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 16ms (Views: 1.9ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.6ms)
+
+
+Started POST "/decks/1/flashcards" for 127.0.0.1 at 2025-11-01 07:50:47 +0000
+Processing by FlashcardsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "flashcard"=>{"front_text"=>"Hello", "back_text"=>"Hola"}, "commit"=>"Create and add another", "deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:25:in `set_deck'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mDeck Load (1.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."id" = 1 LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mFlashcard Create (0.2ms)[0m  [1m[32mINSERT INTO "cards" ("deck_id", "card_type", "front_text", "back_text", "extras", "suspended", "created_at", "updated_at") VALUES (1, 0, 'Hello', 'Hola', '{}', 0, '2025-11-01 07:50:47.740425', '2025-11-01 07:50:47.740425') RETURNING "id" /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+Redirected to http://localhost:3000/decks/1/flashcards/new
+Completed 302 Found in 519ms (ActiveRecord: 1.6ms (4 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/decks/1/flashcards/new" for 127.0.0.1 at 2025-11-01 07:50:48 +0000
+Processing by FlashcardsController#new as TURBO_STREAM
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:25:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering flashcards/new.html.erb within layouts/application
+  Rendered flashcards/new.html.erb within layouts/application (Duration: 1.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | GC: 0.0ms)
+Completed 200 OK in 14ms (Views: 2.2ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.2ms)
+
+
+Started POST "/decks/1/flashcards" for 127.0.0.1 at 2025-11-01 07:52:15 +0000
+Processing by FlashcardsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "flashcard"=>{"front_text"=>"Goodbye", "back_text"=>"Adiós"}, "commit"=>"Create and add another", "deck_id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:25:in `set_deck'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mDeck Load (2.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."id" = 1 LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mFlashcard Create (0.3ms)[0m  [1m[32mINSERT INTO "cards" ("deck_id", "card_type", "front_text", "back_text", "extras", "suspended", "created_at", "updated_at") VALUES (1, 0, 'Goodbye', 'Adiós', '{}', 0, '2025-11-01 07:52:15.769650', '2025-11-01 07:52:15.769650') RETURNING "id" /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+Redirected to http://localhost:3000/decks/1/flashcards/new
+Completed 302 Found in 527ms (ActiveRecord: 3.0ms (4 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/decks/1/flashcards/new" for 127.0.0.1 at 2025-11-01 07:52:16 +0000
+Processing by FlashcardsController#new as TURBO_STREAM
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='new',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:25:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering flashcards/new.html.erb within layouts/application
+  Rendered flashcards/new.html.erb within layouts/application (Duration: 0.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 14ms (Views: 1.9ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.1ms)
+
+
+Started POST "/decks/1/flashcards" for 127.0.0.1 at 2025-11-01 07:52:25 +0000
+Processing by FlashcardsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "flashcard"=>{"front_text"=>"Thank you", "back_text"=>"Gracias"}, "commit"=>"Done", "deck_id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:25:in `set_deck'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mDeck Load (1.3ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."id" = 1 LIMIT 1 /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mFlashcard Create (0.2ms)[0m  [1m[32mINSERT INTO "cards" ("deck_id", "card_type", "front_text", "back_text", "extras", "suspended", "created_at", "updated_at") VALUES (1, 0, 'Thank you', 'Gracias', '{}', 0, '2025-11-01 07:52:25.398236', '2025-11-01 07:52:25.398236') RETURNING "id" /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RubyOnRailsProject',controller='flashcards'*/[0m
+  ↳ app/controllers/flashcards_controller.rb:11:in `create'
+Redirected to http://localhost:3000/decks/1
+Completed 302 Found in 524ms (ActiveRecord: 1.9ms (4 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/decks/1" for 127.0.0.1 at 2025-11-01 07:52:25 +0000
+Processing by DecksController#show as TURBO_STREAM
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/controllers/decks_controller.rb:52:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering decks/show.html.erb within layouts/application
+  [1m[36mFlashcard Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "cards" WHERE "cards"."deck_id" = 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:14
+  [1m[36mFlashcard Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "cards" WHERE "cards"."deck_id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:37
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."deck_id" = 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:41
+  Rendered decks/show.html.erb within layouts/application (Duration: 3.5ms | GC: 0.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.6ms | GC: 0.2ms)
+Completed 200 OK in 17ms (Views: 4.7ms | ActiveRecord: 0.3ms (5 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/decks/1" for 127.0.0.1 at 2025-11-01 07:52:25 +0000
+Processing by DecksController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/controllers/decks_controller.rb:52:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering decks/show.html.erb within layouts/application
+  [1m[36mFlashcard Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "cards" WHERE "cards"."deck_id" = 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:14
+  [1m[36mFlashcard Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "cards" WHERE "cards"."deck_id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:37
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."deck_id" = 1 /*action='show',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/show.html.erb:41
+  Rendered decks/show.html.erb within layouts/application (Duration: 3.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.9ms | GC: 0.0ms)
+Completed 200 OK in 20ms (Views: 4.0ms | ActiveRecord: 0.4ms (5 queries, 0 cached) | GC: 2.4ms)
+
+
+Started GET "/decks/1/learning_session/start" for 127.0.0.1 at 2025-11-01 07:54:00 +0000
+Processing by LearningSessionsController#start as HTML
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='start',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='start',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."deck_id" = 1 AND "cards"."suspended" = 0 /*action='start',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:11:in `start'
+Redirected to http://localhost:3000/decks/1/learning_session/show
+Completed 302 Found in 14ms (ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/decks/1/learning_session/show" for 127.0.0.1 at 2025-11-01 07:54:00 +0000
+Processing by LearningSessionsController#show as HTML
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" = 2 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:126:in `current_card'
+  Rendering layout layouts/application.html.erb
+  Rendering learning_sessions/show.html.erb within layouts/application
+  Rendered learning_sessions/show.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.4ms | GC: 0.0ms)
+Completed 200 OK in 16ms (Views: 2.9ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/decks/1/learning_session/show" for 127.0.0.1 at 2025-11-01 07:54:00 +0000
+Processing by LearningSessionsController#show as HTML
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" = 2 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:126:in `current_card'
+  Rendering layout layouts/application.html.erb
+  Rendering learning_sessions/show.html.erb within layouts/application
+  Rendered learning_sessions/show.html.erb within layouts/application (Duration: 0.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.0ms)
+Completed 200 OK in 16ms (Views: 1.9ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.2ms)
+
+
+Started POST "/decks/1/learning_session/rate" for 127.0.0.1 at 2025-11-01 07:54:31 +0000
+Processing by LearningSessionsController#rate as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "rating"=>"mastered", "deck_id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" = 2 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:126:in `current_card'
+  [1m[36mCardProgress Load (0.1ms)[0m  [1m[34mSELECT "card_progresses".* FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 2 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:164:in `record_review'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mReview Create (0.8ms)[0m  [1m[32mINSERT INTO "reviews" ("user_id", "card_id", "rating", "time_taken_ms", "scheduled_interval_days", "new_interval_days", "new_ease_factor", "reviewed_at", "created_at", "updated_at") VALUES (1, 2, 4, 0, 0, 0, 2.5, '2025-11-01 07:54:32.009840', '2025-11-01 07:54:32.014694', '2025-11-01 07:54:32.014694') RETURNING "id", "reviewed_at" /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mCardProgress Load (0.1ms)[0m  [1m[34mSELECT "card_progresses".* FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 2 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:179:in `update_card_progress'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mCardProgress Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 2 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mCardProgress Create (0.1ms)[0m  [1m[32mINSERT INTO "card_progresses" ("user_id", "card_id", "repetitions", "lapses", "interval_days", "ease_factor", "due_at", "state", "created_at", "updated_at") VALUES (1, 2, 1, 0, 1, 2.6, '2025-11-02 07:54:32.022762', 2, '2025-11-01 07:54:32.024984', '2025-11-01 07:54:32.024984') RETURNING "id", "due_at" /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+Redirected to http://localhost:3000/decks/1/learning_session/show
+Completed 302 Found in 32ms (ActiveRecord: 2.5ms (8 queries, 0 cached) | GC: 1.3ms)
+
+
+Started GET "/decks/1/learning_session/show" for 127.0.0.1 at 2025-11-01 07:54:32 +0000
+Processing by LearningSessionsController#show as TURBO_STREAM
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" = 3 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:126:in `current_card'
+  Rendering layout layouts/application.html.erb
+  Rendering learning_sessions/show.html.erb within layouts/application
+  Rendered learning_sessions/show.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.1ms)
+Completed 200 OK in 15ms (Views: 1.9ms | ActiveRecord: 0.3ms (3 queries, 0 cached) | GC: 0.3ms)
+
+
+Started POST "/decks/1/learning_session/rate" for 127.0.0.1 at 2025-11-01 07:54:49 +0000
+Processing by LearningSessionsController#rate as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "rating"=>"still_learning", "deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" = 3 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:126:in `current_card'
+  [1m[36mCardProgress Load (0.1ms)[0m  [1m[34mSELECT "card_progresses".* FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 3 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:164:in `record_review'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mReview Create (0.8ms)[0m  [1m[32mINSERT INTO "reviews" ("user_id", "card_id", "rating", "time_taken_ms", "scheduled_interval_days", "new_interval_days", "new_ease_factor", "reviewed_at", "created_at", "updated_at") VALUES (1, 3, 2, 0, 0, 0, 2.5, '2025-11-01 07:54:49.422233', '2025-11-01 07:54:49.422649', '2025-11-01 07:54:49.422649') RETURNING "id", "reviewed_at" /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mCardProgress Load (0.1ms)[0m  [1m[34mSELECT "card_progresses".* FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 3 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:179:in `update_card_progress'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mCardProgress Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 3 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mCardProgress Create (0.1ms)[0m  [1m[32mINSERT INTO "card_progresses" ("user_id", "card_id", "repetitions", "lapses", "interval_days", "ease_factor", "due_at", "state", "created_at", "updated_at") VALUES (1, 3, 1, 0, 1, 2.35, '2025-11-02 07:54:49.426103', 0, '2025-11-01 07:54:49.428065', '2025-11-01 07:54:49.428065') RETURNING "id", "due_at" /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+Redirected to http://localhost:3000/decks/1/learning_session/show
+Completed 302 Found in 21ms (ActiveRecord: 2.3ms (8 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/decks/1/learning_session/show" for 127.0.0.1 at 2025-11-01 07:54:49 +0000
+Processing by LearningSessionsController#show as TURBO_STREAM
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" = 1 LIMIT 1 /*action='show',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:126:in `current_card'
+  Rendering layout layouts/application.html.erb
+  Rendering learning_sessions/show.html.erb within layouts/application
+  Rendered learning_sessions/show.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1.3ms | GC: 0.0ms)
+Completed 200 OK in 14ms (Views: 1.6ms | ActiveRecord: 0.2ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/decks/1/learning_session/rate" for 127.0.0.1 at 2025-11-01 07:55:06 +0000
+Processing by LearningSessionsController#rate as TURBO_STREAM
+  Parameters: {"authenticity_token"=>"[FILTERED]", "rating"=>"mastered", "deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" = 1 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:126:in `current_card'
+  [1m[36mCardProgress Load (0.1ms)[0m  [1m[34mSELECT "card_progresses".* FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 1 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:164:in `record_review'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mReview Create (4.0ms)[0m  [1m[32mINSERT INTO "reviews" ("user_id", "card_id", "rating", "time_taken_ms", "scheduled_interval_days", "new_interval_days", "new_ease_factor", "reviewed_at", "created_at", "updated_at") VALUES (1, 1, 4, 0, 0, 0, 2.5, '2025-11-01 07:55:06.973235', '2025-11-01 07:55:06.973641', '2025-11-01 07:55:06.973641') RETURNING "id", "reviewed_at" /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:166:in `record_review'
+  [1m[36mCardProgress Load (0.1ms)[0m  [1m[34mSELECT "card_progresses".* FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 1 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:179:in `update_card_progress'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mCardProgress Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."card_id" = 1 LIMIT 1 /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mCardProgress Create (0.1ms)[0m  [1m[32mINSERT INTO "card_progresses" ("user_id", "card_id", "repetitions", "lapses", "interval_days", "ease_factor", "due_at", "state", "created_at", "updated_at") VALUES (1, 1, 1, 0, 1, 2.6, '2025-11-02 07:55:06.980167', 2, '2025-11-01 07:55:06.982762', '2025-11-01 07:55:06.982762') RETURNING "id", "due_at" /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='rate',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/models/card_progress.rb:62:in `update_from_review'
+Redirected to http://localhost:3000/decks/1/learning_session/complete
+Completed 302 Found in 25ms (ActiveRecord: 5.5ms (8 queries, 0 cached) | GC: 3.7ms)
+
+
+Started GET "/decks/1/learning_session/complete" for 127.0.0.1 at 2025-11-01 07:55:06 +0000
+Processing by LearningSessionsController#complete as TURBO_STREAM
+  Parameters: {"deck_id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='complete',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='complete',application='RubyOnRailsProject',controller='learning_sessions'*/[0m
+  ↳ app/controllers/learning_sessions_controller.rb:97:in `set_deck'
+  Rendering layout layouts/application.html.erb
+  Rendering learning_sessions/complete.html.erb within layouts/application
+  Rendered learning_sessions/complete.html.erb within layouts/application (Duration: 1.7ms | GC: 0.4ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.4ms | GC: 0.4ms)
+Completed 200 OK in 15ms (Views: 2.7ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/progress_analytics" for 127.0.0.1 at 2025-11-01 07:55:16 +0000
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:21:in `total_cards_studied'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:8:in `index'
+  [1m[36mReview Sum (0.1ms)[0m  [1m[34mSELECT SUM("reviews"."time_taken_ms") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:50:in `total_study_time'
+  [1m[36mReview Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:33:in `calculate_study_streak'
+  [1m[36mReview Pluck (0.1ms)[0m  [1m[34mSELECT DATE(reviewed_at) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:35:in `calculate_study_streak'
+Completed 500 Internal Server Error in 27ms (ActiveRecord: 0.4ms (6 queries, 0 cached) | GC: 1.3ms)
+
+
+  
+ArgumentError (comparison of String with Date failed):
+  
+app/models/user.rb:40:in `<'
+app/models/user.rb:40:in `block in calculate_study_streak'
+app/models/user.rb:39:in `each'
+app/models/user.rb:39:in `calculate_study_streak'
+app/controllers/progress_analytics_controller.rb:10:in `index'
+Started GET "/progress_analytics" for 127.0.0.1 at 2025-11-01 07:55:44 +0000
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:21:in `total_cards_studied'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:8:in `index'
+  [1m[36mReview Sum (0.1ms)[0m  [1m[34mSELECT SUM("reviews"."time_taken_ms") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:50:in `total_study_time'
+  [1m[36mReview Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:33:in `calculate_study_streak'
+  [1m[36mReview Pluck (0.1ms)[0m  [1m[34mSELECT DATE(reviewed_at) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:35:in `calculate_study_streak'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 0 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 2 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 3 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", DATE(reviewed_at) AS "date_reviewed_at" FROM "reviews" WHERE "reviews"."user_id" = 1 AND "reviews"."reviewed_at" BETWEEN '2025-10-26 00:00:00' AND '2025-11-01 23:59:59.999999' GROUP BY DATE(reviewed_at) /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:64:in `calculate_reviews_by_day'
+  [1m[36mCACHE Review Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1[0m
+  ↳ app/controllers/progress_analytics_controller.rb:25:in `index'
+  [1m[36mReview Average (0.1ms)[0m  [1m[34mSELECT AVG("reviews"."rating") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/review.rb:26:in `average_rating'
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:93:in `map'
+  [1m[36mFlashcard Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "cards" WHERE "cards"."deck_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:99:in `block in calculate_deck_stats'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:100:in `block in calculate_deck_stats'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 2 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:101:in `block in calculate_deck_stats'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:102:in `block in calculate_deck_stats'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 0 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:103:in `block in calculate_deck_stats'
+  Rendering layout layouts/application.html.erb
+  Rendering progress_analytics/index.html.erb within layouts/application
+  [1m[36mCACHE Review Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1[0m
+  ↳ app/views/progress_analytics/index.html.erb:146
+  [1m[36mReview Load (0.1ms)[0m  [1m[34mSELECT "reviews".* FROM "reviews" WHERE "reviews"."user_id" = 1 ORDER BY "reviews"."reviewed_at" DESC LIMIT 5 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/views/progress_analytics/index.html.erb:148
+  [1m[36mFlashcard Load (0.2ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" IN (1, 3, 2) /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/views/progress_analytics/index.html.erb:148
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/views/progress_analytics/index.html.erb:148
+  Rendered progress_analytics/index.html.erb within layouts/application (Duration: 16.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 25.1ms | GC: 6.1ms)
+Completed 200 OK in 77ms (Views: 25.9ms | ActiveRecord: 3.5ms (23 queries, 2 cached) | GC: 6.5ms)
+
+
+Started GET "/progress_analytics/deck/1" for 127.0.0.1 at 2025-11-01 07:56:04 +0000
+Processing by ProgressAnalyticsController#deck as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 AND "decks"."id" = 1 LIMIT 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:32:in `deck'
+  [1m[36mFlashcard Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "cards" WHERE "cards"."deck_id" = 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:35:in `deck'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:36:in `deck'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:37:in `deck'
+  [1m[36mReview Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 LIMIT 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:38:in `deck'
+  [1m[36mReview Average (0.1ms)[0m  [1m[34mSELECT AVG("reviews"."rating") FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/review.rb:26:in `average_rating'
+  [1m[36mReview Sum (0.1ms)[0m  [1m[34mSELECT SUM("reviews"."time_taken_ms") FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/review.rb:31:in `total_study_time'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 0 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:43:in `deck'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 1 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:44:in `deck'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 2 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:45:in `deck'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 3 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:46:in `deck'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", DATE(reviewed_at) AS "date_reviewed_at" FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 AND "reviews"."reviewed_at" BETWEEN '2025-10-26 00:00:00' AND '2025-11-01 23:59:59.999999' GROUP BY DATE(reviewed_at) /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:82:in `calculate_deck_reviews_by_day'
+  Rendering layout layouts/application.html.erb
+  Rendering progress_analytics/deck.html.erb within layouts/application
+  [1m[36mCACHE Review Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 LIMIT 1[0m
+  ↳ app/views/progress_analytics/deck.html.erb:201
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT "reviews"."id" AS t0_r0, "reviews"."user_id" AS t0_r1, "reviews"."card_id" AS t0_r2, "reviews"."rating" AS t0_r3, "reviews"."time_taken_ms" AS t0_r4, "reviews"."scheduled_interval_days" AS t0_r5, "reviews"."new_interval_days" AS t0_r6, "reviews"."new_ease_factor" AS t0_r7, "reviews"."reviewed_at" AS t0_r8, "reviews"."created_at" AS t0_r9, "reviews"."updated_at" AS t0_r10, "cards"."id" AS t1_r0, "cards"."deck_id" AS t1_r1, "cards"."card_type" AS t1_r2, "cards"."front_text" AS t1_r3, "cards"."back_text" AS t1_r4, "cards"."extras" AS t1_r5, "cards"."suspended" AS t1_r6, "cards"."created_at" AS t1_r7, "cards"."updated_at" AS t1_r8 FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 ORDER BY "reviews"."reviewed_at" DESC LIMIT 5 /*action='deck',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/views/progress_analytics/deck.html.erb:203
+  Rendered progress_analytics/deck.html.erb within layouts/application (Duration: 13.6ms | GC: 0.8ms)
+  Rendered layout layouts/application.html.erb (Duration: 14.4ms | GC: 0.8ms)
+Completed 200 OK in 40ms (Views: 14.5ms | ActiveRecord: 1.3ms (15 queries, 1 cached) | GC: 2.1ms)
+
+

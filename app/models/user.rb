@@ -23,6 +23,8 @@ class User < ApplicationRecord
 
   # Get cards by state
   def cards_by_state(state)
+    # Map 'new' to 'new_card' for enum compatibility
+    state = 'new_card' if state == 'new'
     card_progresses.where(state: state).count
   end
 
@@ -30,7 +32,7 @@ class User < ApplicationRecord
   def calculate_study_streak
     return 0 if reviews.empty?
     
-    dates = reviews.pluck('DATE(reviewed_at)').uniq.sort.reverse
+    dates = reviews.pluck('DATE(reviewed_at)').uniq.map { |d| Date.parse(d.to_s) }.sort.reverse
     streak = 0
     current_date = Date.current
     

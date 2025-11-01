@@ -6,7 +6,7 @@ class CardProgress < ApplicationRecord
   belongs_to :card, class_name: 'Flashcard'
 
   # Enums for card state
-  enum :state, { new: 0, learning: 1, review: 2, relearning: 3 }
+  enum :state, { new_card: 0, learning: 1, review: 2, relearning: 3 }
 
   # Validations
   validates :user_id, uniqueness: { scope: :card_id }
@@ -49,7 +49,7 @@ class CardProgress < ApplicationRecord
     when 3, 4, 'mastered'
       # Good/Easy - normal progression
       self.repetitions += 1
-      if state == 'new' || state == 'learning'
+      if state == 'new_card' || state == 'learning'
         self.interval_days = 1
         self.state = :review
       else
