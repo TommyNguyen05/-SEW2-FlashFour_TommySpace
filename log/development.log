@@ -1110,3 +1110,82 @@ puma (7.0.4) lib/puma/request.rb:100:in `handle_request'
 puma (7.0.4) lib/puma/server.rb:506:in `process_client'
 puma (7.0.4) lib/puma/server.rb:265:in `block in run'
 puma (7.0.4) lib/puma/thread_pool.rb:173:in `block in spawn_thread'
+Started GET "/" for ::1 at 2025-11-01 23:17:15 +1030
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+Processing by DecksController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/index.html.erb within layouts/application
+  [1m[36mDeck Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "decks" WHERE "decks"."owner_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/index.html.erb:11
+  Rendered decks/index.html.erb within layouts/application (Duration: 4.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 8.4ms | GC: 0.0ms)
+Completed 200 OK in 78ms (Views: 10.6ms | ActiveRecord: 1.5ms (2 queries, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/progress" for ::1 at 2025-11-01 23:17:16 +1030
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+Completed 500 Internal Server Error in 40ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (Missing model class CardProgress for the User#card_progresses association. You can specify a different model class with the :class_name option.)
+Caused by: NameError (uninitialized constant User::CardProgress)
+
+Information for: NameError (Missing model class CardProgress for the User#card_progresses association. You can specify a different model class with the :class_name option.):
+  
+app/controllers/progress_analytics_controller.rb:5:in `index'
+
+Information for cause: NameError (uninitialized constant User::CardProgress):
+  
+app/controllers/progress_analytics_controller.rb:5:in `index'
+Started GET "/progress" for ::1 at 2025-11-01 23:21:43 +1030
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RubyOnRailsProject'*/[0m
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+Completed 500 Internal Server Error in 61ms (ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+ArgumentError (wrong number of arguments (given 0, expected 1..2)):
+  
+app/models/card_progress.rb:8:in `<class:CardProgress>'
+app/models/card_progress.rb:4:in `<main>'
+app/controllers/progress_analytics_controller.rb:5:in `index'
+Started GET "/" for ::1 at 2025-11-01 23:21:53 +1030
+Processing by DecksController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/index.html.erb within layouts/application
+  [1m[36mDeck Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "decks" WHERE "decks"."owner_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/index.html.erb:11
+  Rendered decks/index.html.erb within layouts/application (Duration: 4.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 8.5ms | GC: 0.0ms)
+Completed 200 OK in 57ms (Views: 9.4ms | ActiveRecord: 0.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2025-11-01 23:21:55 +1030
+Processing by DecksController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  Rendering layout layouts/application.html.erb
+  Rendering decks/index.html.erb within layouts/application
+  [1m[36mDeck Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "decks" WHERE "decks"."owner_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='decks'*/[0m
+  ↳ app/views/decks/index.html.erb:11
+  Rendered decks/index.html.erb within layouts/application (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 0.6ms | GC: 0.0ms)
+Completed 200 OK in 40ms (Views: 0.7ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/progress" for ::1 at 2025-11-01 23:21:56 +1030
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+Completed 500 Internal Server Error in 42ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.6ms)
+
+
+  
+ArgumentError (wrong number of arguments (given 0, expected 1..2)):
+  
+app/models/card_progress.rb:8:in `<class:CardProgress>'
+app/models/card_progress.rb:4:in `<main>'
+app/controllers/progress_analytics_controller.rb:5:in `index'
