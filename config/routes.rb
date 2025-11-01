@@ -1,15 +1,19 @@
 Rails.application.routes.draw do
-  # This line creates all the necessary routes for user accounts (sign up, sign in, etc.)
-  devise_for :users
+  resources :users, only: [:new, :create, :show]
+  resource  :session, only: [:new, :create, :destroy]
 
-  # This sets your home page
-  root 'decks#index'
-
-  # Health check route
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Your other routes
   resources :decks do
-    resources :flashcards, only: [:new, :create]
+    resources :cards do
+      resources :reviews, only: [:create]
+      resource :card_progress, only: [:show, :update]
+    end
+    resources :deck_collaborators, only: [:index, :create, :destroy]
   end
+
+  resources :tags, only: [:index, :create]
+  resources :taggings, only: [:create, :destroy]
+
+  get "progress", to: "progress#index", as: :progress
+
+  root "decks#index"
 end

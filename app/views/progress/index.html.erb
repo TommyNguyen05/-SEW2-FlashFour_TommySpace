@@ -1,0 +1,16 @@
+<div class="progress-analytics">
+  <h1>Progress analytics</h1>
+
+  <%= render "summary",
+      total_cards: @total_cards,
+      reviewed_today: @reviews_today,
+      due_cards: @due_now,
+      accuracy: @accuracy,
+      streak_days: @streak_days %>
+
+  <%= render "deck_breakdown",
+      per_deck_stats: @per_deck_stats %>
+
+  <%= render "activity_chart",
+      review_activity: @review_activity %>
+</div>
