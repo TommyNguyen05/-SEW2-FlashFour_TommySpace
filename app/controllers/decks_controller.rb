@@ -46,7 +46,7 @@ class DecksController < ApplicationController
   end
 
   def export
-    @deck = (current_user.decks.find(params[:id]) rescue Deck.where(owner_id: current_user.id).find(params[:id]))
+    @deck = current_user.decks.find_by(id: params[:id]) || Deck.find_by!(owner_id: current_user.id, id: params[:id])
     
     # Generate the export content
     export_content = @deck.flashcards.map do |card|
@@ -95,12 +95,15 @@ class DecksController < ApplicationController
         # Create flashcards from the file content
         cards_created = 0
         lines.each do |line|
-          # Split by comma, handling escaped commas
-          parts = line.split(',', 2)
+          # Split by first unescaped comma
+          # Replace escaped commas temporarily, split, then restore
+          temp_marker = "\u{FFFF}"
+          temp_line = line.gsub('\\,', temp_marker)
+          parts = temp_line.split(',', 2)
           next if parts.length < 2
 
-          front = parts[0].gsub('\\,', ',').strip
-          back = parts[1].gsub('\\,', ',').strip
+          front = parts[0].gsub(temp_marker, ',').strip
+          back = parts[1].gsub(temp_marker, ',').strip
           
           next if front.blank? || back.blank?
 
@@ -123,7 +126,10 @@ class DecksController < ApplicationController
       else
         render :import_form, status: :unprocessable_entity
       end
-    rescue => e
+    rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError => e
+      @deck.errors.add(:base, "Invalid file encoding. Please ensure the file is UTF-8 encoded.")
+      render :import_form, status: :unprocessable_entity
+    rescue StandardError => e
       @deck.errors.add(:base, "Error reading file: #{e.message}")
       render :import_form, status: :unprocessable_entity
     end
