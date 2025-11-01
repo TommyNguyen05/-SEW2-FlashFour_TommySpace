@@ -19,6 +19,8 @@
         </div>
         <nav class="user-nav">
           <% if user_signed_in? %>
+            <%= link_to "My Decks", root_path, class: "header-button" %>
+            <%= link_to "Progress Analytics", progress_analytics_path, class: "header-button" %>
             <span class="user-name">Hello, <%= current_user.display_name %></span>
             <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "header-button" %>
           <% else %>

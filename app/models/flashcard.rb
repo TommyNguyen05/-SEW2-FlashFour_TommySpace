@@ -1,6 +1,8 @@
 class Flashcard < ApplicationRecord
   self.table_name = 'cards'
   belongs_to :deck
+  has_many :card_progresses, foreign_key: :card_id, dependent: :destroy
+  has_many :reviews, foreign_key: :card_id, dependent: :destroy
 
   # BEFORE (keyword form, causing the error)
   # enum card_type: { basic: 0 }

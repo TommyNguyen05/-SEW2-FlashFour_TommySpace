@@ -8,6 +8,10 @@ Rails.application.routes.draw do
   # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Progress Analytics routes
+  resources :progress_analytics, only: [:index]
+  get 'progress_analytics/deck/:id', to: 'progress_analytics#deck', as: 'deck_progress_analytics'
+
   # Your other routes
   resources :decks do
     resources :flashcards, only: [:new, :create]
