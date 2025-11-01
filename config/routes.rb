@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
   # Your other routes
   resources :decks do
+    member do
+      get 'export'
+    end
+    
     resources :flashcards, only: %i[new create]
 
     # Learning session routes

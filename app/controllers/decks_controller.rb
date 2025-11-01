@@ -45,6 +45,24 @@ class DecksController < ApplicationController
     redirect_to decks_path, notice: 'Deck was successfully deleted.'
   end
 
+  def export
+    @deck = (current_user.decks.find(params[:id]) rescue Deck.where(owner_id: current_user.id).find(params[:id]))
+    
+    # Generate the export content
+    export_content = @deck.flashcards.map do |card|
+      # Escape commas and newlines in the content
+      front = card.front_text.gsub(',', '\\,').gsub("\n", ' ')
+      back = card.back_text.gsub(',', '\\,').gsub("\n", ' ')
+      "#{front},#{back}"
+    end.join("\n")
+    
+    # Send the file for download
+    send_data export_content,
+              filename: "#{@deck.title.parameterize}-#{Time.current.to_i}.txt",
+              type: 'text/plain',
+              disposition: 'attachment'
+  end
+
   private
 
   def set_deck
