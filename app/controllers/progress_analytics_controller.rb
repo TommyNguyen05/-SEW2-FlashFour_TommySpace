@@ -1,4 +1,4 @@
-class CardProgressesController < ApplicationController
+class ProgressAnalyticsController < ApplicationController
   before_action :authenticate_user!
 
   def index
