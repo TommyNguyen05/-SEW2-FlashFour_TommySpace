@@ -201,7 +201,7 @@ class LearningSessionsController < ApplicationController
     when 2
       [interval * 1.2, 1].max.to_i
     when 3, 4
-      progress.state == 'new_card' || progress.state == 'learning' ? 1 : (interval * ease).to_i
+      progress.new_card? || progress.learning? ? 1 : (interval * ease).to_i
     else
       interval
     end

@@ -32,7 +32,7 @@ class User < ApplicationRecord
   def calculate_study_streak
     return 0 if reviews.empty?
     
-    dates = reviews.pluck('DATE(reviewed_at)').uniq.map { |d| Date.parse(d.to_s) }.sort.reverse
+    dates = reviews.pluck('DATE(reviewed_at)').uniq.map(&:to_date).sort.reverse
     streak = 0
     current_date = Date.current
     

@@ -155,8 +155,7 @@
                       </div>
                     </div>
                     <div class="text-end">
-                      <% rating_stars = '⭐' * review.rating %>
-                      <span class="badge bg-light text-dark"><%= rating_stars %></span>
+                      <%= rating_stars(review.rating) %>
                       <br>
                       <small class="text-muted"><%= time_ago_in_words(review.reviewed_at) %> ago</small>
                     </div>

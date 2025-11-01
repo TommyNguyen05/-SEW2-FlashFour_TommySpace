@@ -2268,3 +2268,57 @@ Processing by ProgressAnalyticsController#deck as HTML
 Completed 200 OK in 40ms (Views: 14.5ms | ActiveRecord: 1.3ms (15 queries, 1 cached) | GC: 2.1ms)
 
 
+Started GET "/progress_analytics" for 127.0.0.1 at 2025-11-01 08:01:19 +0000
+Processing by ProgressAnalyticsController#index as HTML
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 ORDER BY "users"."id" ASC LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:21:in `total_cards_studied'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:9:in `index'
+  [1m[36mReview Sum (0.1ms)[0m  [1m[34mSELECT SUM("reviews"."time_taken_ms") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:50:in `total_study_time'
+  [1m[36mReview Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:33:in `calculate_study_streak'
+  [1m[36mReview Pluck (0.1ms)[0m  [1m[34mSELECT DATE(reviewed_at) FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:35:in `calculate_study_streak'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 0 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 2 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" WHERE "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 3 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/user.rb:28:in `cards_by_state'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) AS "count_all", DATE(reviewed_at) AS "date_reviewed_at" FROM "reviews" WHERE "reviews"."user_id" = 1 AND "reviews"."reviewed_at" BETWEEN '2025-10-26 00:00:00' AND '2025-11-01 23:59:59.999999' GROUP BY DATE(reviewed_at) /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:65:in `calculate_reviews_by_day'
+  [1m[36mCACHE Review Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1[0m
+  ↳ app/controllers/progress_analytics_controller.rb:26:in `index'
+  [1m[36mReview Average (0.1ms)[0m  [1m[34mSELECT AVG("reviews"."rating") FROM "reviews" WHERE "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/models/review.rb:26:in `average_rating'
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."owner_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:94:in `map'
+  [1m[36mFlashcard Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "cards" WHERE "cards"."deck_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:100:in `block in calculate_deck_stats'
+  [1m[36mReview Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "reviews"."card_id") FROM "reviews" INNER JOIN "cards" ON "cards"."id" = "reviews"."card_id" WHERE "cards"."deck_id" = 1 AND "reviews"."user_id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:101:in `block in calculate_deck_stats'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 2 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:102:in `block in calculate_deck_stats'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:103:in `block in calculate_deck_stats'
+  [1m[36mCardProgress Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "card_progresses" INNER JOIN "cards" ON "cards"."id" = "card_progresses"."card_id" WHERE "cards"."deck_id" = 1 AND "card_progresses"."user_id" = 1 AND "card_progresses"."state" = 0 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/controllers/progress_analytics_controller.rb:104:in `block in calculate_deck_stats'
+  Rendering layout layouts/application.html.erb
+  Rendering progress_analytics/index.html.erb within layouts/application
+  [1m[36mCACHE Review Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "reviews" WHERE "reviews"."user_id" = 1 LIMIT 1[0m
+  ↳ app/views/progress_analytics/index.html.erb:146
+  [1m[36mReview Load (0.1ms)[0m  [1m[34mSELECT "reviews".* FROM "reviews" WHERE "reviews"."user_id" = 1 ORDER BY "reviews"."reviewed_at" DESC LIMIT 5 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/views/progress_analytics/index.html.erb:148
+  [1m[36mFlashcard Load (0.1ms)[0m  [1m[34mSELECT "cards".* FROM "cards" WHERE "cards"."id" IN (1, 3, 2) /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/views/progress_analytics/index.html.erb:148
+  [1m[36mDeck Load (0.1ms)[0m  [1m[34mSELECT "decks".* FROM "decks" WHERE "decks"."id" = 1 /*action='index',application='RubyOnRailsProject',controller='progress_analytics'*/[0m
+  ↳ app/views/progress_analytics/index.html.erb:148
+  Rendered progress_analytics/index.html.erb within layouts/application (Duration: 9.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 12.2ms | GC: 0.0ms)
+Completed 200 OK in 55ms (Views: 12.7ms | ActiveRecord: 2.0ms (23 queries, 2 cached) | GC: 1.3ms)
+
+

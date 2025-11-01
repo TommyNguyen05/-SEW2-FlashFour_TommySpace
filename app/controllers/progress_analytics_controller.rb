@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ProgressAnalyticsController < ApplicationController
+  include ProgressAnalyticsHelper
   before_action :authenticate_user!
 
   def index
@@ -102,19 +103,6 @@ class ProgressAnalyticsController < ApplicationController
         learning: deck_progress.learning.count,
         new: deck_progress.new_card.count
       }
-    end
-  end
-
-  def format_study_time(seconds)
-    return '0m' if seconds == 0
-    
-    hours = (seconds / 3600).to_i
-    minutes = ((seconds % 3600) / 60).to_i
-    
-    if hours > 0
-      "#{hours}h #{minutes}m"
-    else
-      "#{minutes}m"
     end
   end
 end

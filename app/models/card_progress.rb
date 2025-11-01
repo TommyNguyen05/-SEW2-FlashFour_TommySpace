@@ -45,11 +45,11 @@ class CardProgress < ApplicationRecord
       self.interval_days = [interval_days * 1.2, 1].max.to_i
       self.ease_factor = [ease_factor - 0.15, 1.3].max
       self.due_at = Time.current + interval_days.days
-      self.state = :review if state == 'learning'
+      self.state = :review if learning?
     when 3, 4, 'mastered'
       # Good/Easy - normal progression
       self.repetitions += 1
-      if state == 'new_card' || state == 'learning'
+      if new_card? || learning?
         self.interval_days = 1
         self.state = :review
       else
