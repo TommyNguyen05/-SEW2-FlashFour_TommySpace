@@ -1,0 +1,99 @@
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "learning_sessions", "data-turbo-track": "reload" %>
+<% end %>
+
+<div class="learning-session-container">
+  <%= link_to "← Back to Deck", deck_path(@deck), class: "back-link" %>
+  
+  <div class="completion-card">
+    <div class="completion-icon">🎉</div>
+    <h1>Quiz Complete!</h1>
+    
+    <div class="quiz-results">
+      <div class="result-stat">
+        <div class="stat-number"><%= @correct_count %> / <%= @total_cards %></div>
+        <div class="stat-label">Correct Answers</div>
+      </div>
+      
+      <div class="result-stat">
+        <div class="stat-number score-percentage <%= @score_percentage >= 70 ? 'good' : 'needs-improvement' %>">
+          <%= @score_percentage %>%
+        </div>
+        <div class="stat-label">Score</div>
+      </div>
+    </div>
+    
+    <% if @score_percentage >= 90 %>
+      <p class="result-message excellent">Excellent work! You've mastered this deck! 🌟</p>
+    <% elsif @score_percentage >= 70 %>
+      <p class="result-message good">Great job! Keep practicing to improve further! 💪</p>
+    <% else %>
+      <p class="result-message needs-work">Keep studying! Practice makes perfect! 📚</p>
+    <% end %>
+    
+    <div class="completion-actions">
+      <%= link_to "Take Another Quiz", restart_deck_quiz_path(@deck), data: { turbo_method: :post }, class: "button primary large" %>
+      <%= link_to "Back to Deck", deck_path(@deck), class: "button secondary large" %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .quiz-results {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin: 2rem 0;
+  }
+  
+  .result-stat {
+    text-align: center;
+  }
+  
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .score-percentage.good {
+    color: #28a745;
+  }
+  
+  .score-percentage.needs-improvement {
+    color: #ffc107;
+  }
+  
+  .stat-label {
+    font-size: 1rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .result-message {
+    font-size: 1.2rem;
+    margin: 2rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .result-message.excellent {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .result-message.good {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+  }
+  
+  .result-message.needs-work {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+  }
+</style>
