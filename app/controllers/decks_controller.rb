@@ -48,18 +48,24 @@ class DecksController < ApplicationController
   def export
     @deck = current_user.decks.find_by(id: params[:id]) || Deck.find_by!(owner_id: current_user.id, id: params[:id])
     
-    # Generate the export content
-    export_content = @deck.flashcards.map do |card|
-      # Escape commas and newlines in the content
-      front = card.front_text.gsub(',', '\\,').gsub("\n", ' ')
-      back = card.back_text.gsub(',', '\\,').gsub("\n", ' ')
-      "#{front},#{back}"
-    end.join("\n")
+    # Generate the export content as JSON
+    export_data = {
+      deck: {
+        title: @deck.title,
+        description: @deck.description
+      },
+      flashcards: @deck.flashcards.map do |card|
+        {
+          front_text: card.front_text,
+          back_text: card.back_text
+        }
+      end
+    }
     
     # Send the file for download
-    send_data export_content,
-              filename: "#{@deck.title.parameterize}-#{Time.current.to_i}.txt",
-              type: 'text/plain',
+    send_data export_data.to_json,
+              filename: "#{@deck.title.parameterize}-#{Time.current.to_i}.json",
+              type: 'application/json',
               disposition: 'attachment'
   end
 
@@ -79,31 +85,43 @@ class DecksController < ApplicationController
 
     file = params[:deck][:file]
     
-    # Parse the uploaded file
+    # Parse the uploaded JSON file
     begin
       content = file.read.force_encoding('UTF-8')
-      lines = content.split("\n").reject(&:blank?)
       
-      if lines.empty?
-        @deck.errors.add(:base, "The uploaded file is empty")
+      # Parse JSON
+      data = JSON.parse(content)
+      
+      # Validate JSON structure
+      unless data.is_a?(Hash) && data['flashcards'].is_a?(Array)
+        @deck.errors.add(:base, "Invalid JSON structure. Expected a hash with 'flashcards' array.")
+        render :import_form, status: :unprocessable_entity
+        return
+      end
+      
+      flashcards = data['flashcards']
+      
+      if flashcards.empty?
+        @deck.errors.add(:base, "The uploaded file contains no flashcards")
         render :import_form, status: :unprocessable_entity
         return
       end
 
       # Save the deck first
       if @deck.save
-        # Create flashcards from the file content
+        # Create flashcards from the JSON data
         cards_created = 0
-        lines.each do |line|
-          # Split by first unescaped comma
-          # Replace escaped commas temporarily, split, then restore
-          temp_marker = "\u{FFFF}"
-          temp_line = line.gsub('\\,', temp_marker)
-          parts = temp_line.split(',', 2)
-          next if parts.length < 2
-
-          front = parts[0].gsub(temp_marker, ',').strip
-          back = parts[1].gsub(temp_marker, ',').strip
+        flashcards.each do |card_data|
+          next unless card_data.is_a?(Hash)
+          
+          # Explicitly handle nil values
+          front_text = card_data['front_text']
+          back_text = card_data['back_text']
+          
+          next if front_text.nil? || back_text.nil?
+          
+          front = front_text.to_s.strip
+          back = back_text.to_s.strip
           
           next if front.blank? || back.blank?
 
@@ -126,6 +144,9 @@ class DecksController < ApplicationController
       else
         render :import_form, status: :unprocessable_entity
       end
+    rescue JSON::ParserError => e
+      @deck.errors.add(:base, "Invalid JSON format: #{e.message}")
+      render :import_form, status: :unprocessable_entity
     rescue Encoding::InvalidByteSequenceError, Encoding::UndefinedConversionError => e
       @deck.errors.add(:base, "Invalid file encoding. Please ensure the file is UTF-8 encoded.")
       render :import_form, status: :unprocessable_entity

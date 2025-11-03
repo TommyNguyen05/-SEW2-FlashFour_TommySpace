@@ -10,3 +10,18 @@ More about Devise:
     User logout
     "Forgot my password" functionality
 - Because the project uses the devise Gem, don't have to code any of that yourself.
+
+# Run the application
+- Install any missing gem:
+    ```bash
+    bundle install 
+    ```
+- Run the pending migrations:
+    ```bash
+    bin/rails db:migrate
+    ```
+- Start the application server:
+    ```bash
+    bin/rails server
+    ```
+- Access the application via the link: http://localhost:3000

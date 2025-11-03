@@ -1,5 +1,5 @@
 <section class="analytics-section analytics-activity">
-  <h2>Last 14 days</h2>
+  <h2>Last 14 Days</h2>
 
   <% if review_activity.present? && review_activity.any? %>
     <% max_val = review_activity.map { |d| d[:count] }.max.to_f %>
@@ -7,13 +7,13 @@
       <% review_activity.each do |day| %>
         <% count = day[:count] || 0 %>
         <% height = max_val > 0 ? ((count / max_val) * 100).round : 0 %>
-        <div class="activity-bar" title="<%= "#{day[:date]}: #{count} reviews" %>">
+        <div class="activity-bar" title="<%= "#{day[:date].strftime('%B %d')}: #{count} review#{'s' unless count == 1}" %>">
           <div class="bar-fill" style="height: <%= height %>%"></div>
-          <p class="bar-label"><%= day[:date].strftime("%d %b") %></p>
+          <div class="bar-label"><%= day[:date].strftime("%d %b") %></div>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p>No recent review activity.</p>
+    <p class="empty-state-message">No recent review activity.</p>
   <% end %>
 </section>

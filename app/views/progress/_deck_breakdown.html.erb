@@ -1,21 +1,21 @@
 <section class="analytics-section analytics-decks">
-  <h2>By deck</h2>
+  <h2>By Deck</h2>
 
   <% if per_deck_stats.present? && per_deck_stats.any? %>
     <table class="analytics-table">
       <thead>
         <tr>
-          <th>Deck</th>
-          <th>Total</th>
-          <th>Due</th>
-          <th>Reviewed today</th>
+          <th>Deck Name</th>
+          <th>Total Cards</th>
+          <th>Due Now</th>
+          <th>Reviewed Today</th>
           <th>Accuracy</th>
         </tr>
       </thead>
       <tbody>
         <% per_deck_stats.each do |deck| %>
           <tr>
-            <td><%= deck[:name] %></td>
+            <td><strong><%= deck[:name] %></strong></td>
             <td><%= deck[:total] || 0 %></td>
             <td><%= deck[:due] || 0 %></td>
             <td><%= deck[:reviewed_today] || 0 %></td>
@@ -28,6 +28,6 @@
       </tbody>
     </table>
   <% else %>
-    <p>No deck data yet. Start reviewing to see per-deck analytics.</p>
+    <p class="empty-state-message">No deck data yet. Start reviewing to see per-deck analytics.</p>
   <% end %>
 </section>

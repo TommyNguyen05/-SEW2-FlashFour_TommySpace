@@ -28,11 +28,11 @@
     </div>
 
     <div class="field">
-      <%= f.label :file, "Upload File (.txt)" %>
-      <%= f.file_field :file, accept: ".txt", required: true %>
+      <%= f.label :file, "Upload File (.json)" %>
+      <%= f.file_field :file, accept: ".json", required: true %>
       <small class="help-text">
-        Each line should contain the front and back content of a card, separated by a comma.
-        <br>Example: "What is the capital of France?,Paris"
+        The file should be in JSON format with a structure like:
+        <br><code>{"deck": {"title": "...", "description": "..."}, "flashcards": [{"front_text": "...", "back_text": "..."}]}</code>
       </small>
     </div>
 
